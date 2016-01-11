@@ -1,0 +1,22 @@
+{
+  "author":"Daniel Hindi"
+,"pluginName":"Weather Plugin Example"
+,"pluginDescription":"JQuery + Datastore "
+,"supportEmail":"[Your support Email]"
+,"control":{
+  "content":{
+    "enabled":true
+  }
+, "design":{
+    "enabled":false
+  }
+, "settings":{
+    "enabled":false
+  }
+}
+,"widget":{
+
+},
+  "features" : [],
+  "languages" : ["en"]
+}

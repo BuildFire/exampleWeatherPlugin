@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+	<!-- Load helper.css to use our helper classes.
+	<link href="../../../../styles/helper.css" rel="stylesheet">
+	-->
+	
+	<!-- JS -->
+	<script src="../../../scripts/buildfire.js"></script>
+   
+ 	<!--
+    <script src="../../../scripts/angular/angular.min.js"></script>
+    <script src="../../../scripts/angular/ui-bootstrap.min.js"></script>
+
+
+    -->
+	<script src="../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+</head>
+<body>
+	<div class="jumbotron">
+		<h1>Weather</h1>
+		<h2 id="location">loading...</h2>
+		<h3 id="summary"></h3>
+	</div>
+	<div class="alert alert-warning" role="alert">
+		<h1 id="temp"></h1>
+		<h4 id="range"></h4>
+	</div>
+	<div class="alert alert-success" role="alert">
+		<h1 id="clouds"></h1>
+	</div>
+	<script>
+
+		function loadWeatherData(city) {
+			city = encodeURIComponent(city);
+			/// Call open weather API to pull data
+			$.ajax({
+				url: "http://api.openweathermap.org/data/2.5/find?appid=2de143494c0b295cca9337e1e96b00e0&"
+				+ "q=" + city + "&units=imperial"
+			}).done(function (data) {
+				/// check you have data to report on
+				if (data && data.list && data.list.length) {
+					/// fill in the UI with the new data
+					var report = data.list[0];
+					$('#location').text(report.name);
+					$('#summary').text(report.weather.description);
+					$('#temp').text(report.main.temp + " degrees");
+					$('#rang').text("Low: " + report.main.temp_min + " - High: " + report.main.temp_max);
+					$('#clouds').text(report.clouds.all > 50 ? "Cloudy" : "Clear Skys");
+				}
+			});
+		}
+
+		buildfire.datastore.get(function(err,obj){
+			if(obj)
+				loadWeatherData(obj.data.loc);
+		});
+
+		buildfire.datastore.onUpdate(function(obj){
+			loadWeatherData(obj.data.loc);
+		});
+
+	</script>
+</body>
+</html>

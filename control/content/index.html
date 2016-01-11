@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+	<!-- Load helper.css to use our helper classes.
+	<link href="../../../../styles/helper.css" rel="stylesheet">
+	-->
+	
+	<!-- JS -->
+	<script src="../../../../scripts/buildfire.js"></script>
+   
+ 	<!--
+    <script src="../../../../scripts/angular/angular.min.js"></script>
+    <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
+
+    <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
+    -->
+</head>
+<body>
+    <div class="form-group">
+        <label for="location">Location</label>
+        <input type="text" class="form-control" id="location" placeholder="Location">
+    </div>
+
+    <button class="btn btn-default" onclick="save()">Save</button>
+
+    <br/><br/>
+
+<script>
+    function save(){
+        buildfire.datastore.save(
+                {loc: document.getElementById("location").value }
+        ,function (err,result){
+            if(err)
+                console.error(err);
+            else
+                console.log("saved");
+        });
+    }
+
+    function load(){
+        buildfire.datastore.get(function(err,obj){
+            if(obj)
+                document.getElementById("location").value = obj.data.loc;
+        });
+    }
+
+    load();
+
+</script>
+
+</body>
+
+</html>
