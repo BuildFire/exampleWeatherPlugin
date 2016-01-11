@@ -6,5 +6,5 @@ the source code described in this video tutorial https://www.youtube.com/watch?v
 ## Note:
 This is just the plugin source code. if you need the full BuildFire SDK you can find it here https://github.com/BuildFire/sdk
 
-### Sepecial Thanks to 
+### Special Thanks to 
 openweathermap.org for providing the poen api
