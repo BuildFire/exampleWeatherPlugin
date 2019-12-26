@@ -5,8 +5,8 @@ export default class WeatherData {
        * Returns weather data
        * @param {Function} callback callback for handling response
        */
-    static getAll = (id, callback) => {
-        buildfire.publicData.getById(id, WeatherInfos.TAG, (err, record) => {
+    static getAll = (options, callback) => {
+        buildfire.publicData.search(options, WeatherInfos.TAG, (err, record) => {
             if (err) return callback(err);
             const records = record.map(data => new WeatherInfo(data));
             return callback(records);

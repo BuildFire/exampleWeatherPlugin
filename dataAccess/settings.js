@@ -5,8 +5,8 @@ export default class Settings {
        * Returns settings
        * @param {Function} callback callback for handling response
        */
-    static getAll = (id, callback) => {
-        buildfire.datastore.getById(id, Settings.TAG, (err, record) => {
+    static getAll = (options, callback) => {
+        buildfire.datastore.search(options, Settings.TAG, (err, record) => {
             if (err) return callback(err);
             const records = record.map(data => new Setting(data));
             return callback(records);
