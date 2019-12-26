@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!--
+
+
+
+
+    NOTE: WHEN YOU COPY THIS FILE YOU WILL NEED TO CHANGE RELATIVE PATHS
+
+
+
+
+    -->
+
+
+    <!-- build:bundleControlBFMinJS  -->
+    <script src="../../../../../../scripts/buildfire.js"></script>
+    <!-- endbuild -->
+
+    <script src="../../../../../../scripts/sortable.min.js"></script>
+
+    <script src="sortableList.js"></script>
+    <script src="sortableListUI.js"></script>
+
+
+    <link rel="stylesheet" href="../../../assets/base.css">
+
+    <link rel="stylesheet" href="../../../assets/linearicons/cpIcons.css">
+    <link rel="stylesheet" href="sortableList.css">
+
+
+
+
+</head>
+<body>
+    <h4 class="section__title">Title</h4>
+    
+    <div>
+        <button onclick="insertDummyRecords();" class="btn btn-primary">Insert Dummy Data</button>
+        <button onclick="purgeRecords();" class="btn btn-danger">Purge Data</button>
+        <div>
+
+    <div id="items"></div>
+
+    <div>
+        <button class="btn btn-success" onclick="addItem()"><span class="icon icon-plus"></span>Add</button>
+    </div>
+
+    <script>
+
+        let tag="dummyData";
+        function insertDummyRecords(){
+        	/// you can add any other properties to this items as long as it has these two {title, imgUrl}
+			let data={
+				items:[
+					{title:"John 1",imgUrl:"https://img.icons8.com/material/4ac144/256/user-male.png"}
+					,{title:"Dan 2",imgUrl:"https://img.icons8.com/material/4ac144/256/user-male.png"}
+					,{title:"Ian 3",imgUrl:"https://img.icons8.com/material/4ac144/256/user-male.png"}
+					,{title:"Jane 1 ",imgUrl:"https://img.icons8.com/material/4ac144/256/user-female.png"}
+					,{title:"Amy 2 ",imgUrl:"https://img.icons8.com/material/4ac144/256/user-female.png"}
+					,{title:"April 3 ",imgUrl:"https://img.icons8.com/material/4ac144/256/user-female.png"}
+				]
+			};
+
+			buildfire.datastore.save(data,tag,()=>{
+				location.reload();
+            });
+        }
+
+        /// remove after testing
+        function purgeRecords(){
+        	debugger;
+        	if(sortableListUI.id) {
+				buildfire.datastore.delete(sortableListUI.id, tag, () => {
+					location.reload();
+				});
+			}
+        }
+
+        function addItem(){
+        	let item = {
+        		title: "Added Manually Item " + (new Date().toLocaleTimeString())
+                ,imgUrl:"https://img.icons8.com/material/4ac144/256/user-male.png"
+                ,createdOn:new Date()
+                ,prop1:"blah blah"
+            };
+			sortableListUI.addItem(item); /// this will also add it to the database
+        }
+
+		sortableListUI.init("items",tag);
+		sortableListUI.onItemClick=(item,index,divRow)=>{
+
+			///pop up a windows to edit then when you come back call sortableListUI.updateItem is there is an edit
+			item.title += " Updated!";
+			item.lastUpdatedOn = new Date();
+			sortableListUI.updateItem(item,index,divRow);
+        }
+    </script>
+
+</body>
+</html>

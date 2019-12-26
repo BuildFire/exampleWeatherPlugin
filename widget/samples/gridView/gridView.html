@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- build:bundleWidgetBFMinJS  -->
+    <script src="../../../../../scripts/buildfire.js"></script>
+    <!-- endbuild -->
+
+    <link rel="stylesheet" href="../../css/a.css">
+    <link rel="stylesheet" href="gridView.css">
+
+    <script src="../../js/shared/ui.js"></script>
+    <script src="gridView.js"></script>
+
+
+    <script src="dummyData.js"></script>
+
+</head>
+<body>
+    <div id="gridContainer">
+
+    </div>
+
+    <script>
+
+        let gv = new GridView("gridContainer",{enableAddButton:true,Title:""});
+        gv.onAddButtonClicked=()=>{
+            let item= new GridViewItem({
+				title:"Title 1"
+				,imageUrl:"https://img.icons8.com/officel/2x/worldwide-location.png"
+				,badgeNumber:0
+				,badgeClass:"red"
+				,markerUrl:"https://img.icons8.com/ios/72/worldwide-location.png"
+            });
+
+            gv.addItem(item);
+        };
+
+        gv.onItemClicked=item=>{
+        	//open and maybe edit
+            item.badgeNumber++;
+            item.update();
+        };
+
+		gv.loadGridViewItems(dummyData);
+
+    </script>
+</body>
+</html>

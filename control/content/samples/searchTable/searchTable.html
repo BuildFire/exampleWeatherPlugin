@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- build:bundleControlBFMinJS  -->
+    <script src="../../../../../../scripts/buildfire.js"></script>
+    <!-- endbuild -->
+    <link rel="stylesheet" href="../../../assets/base.css">
+    <link rel="stylesheet" href="../../../assets/linearicons/cpIcons.css">
+    <link rel="stylesheet" href="searchTable.css">
+
+    <script src="searchTableConfig.js"></script>
+    <script src="searchTableHelper.js"></script>
+
+    <!-- DELETE THIS SCRIPT IN PROD -->
+    <script src="dummyData.js"></script>
+
+</head>
+<body>
+    <!-- DELETE THIS button IN PROD -->
+    <button id="btnDELETEME" onclick="dummyData.insertDummyRecords('records',100,load)" class="btn btn-primary">Insert Dummy data</button>
+
+
+    <div id="searchCriteria">
+        <!-- <div class="form-group">
+            <button id="btnAdd" class="btn btn-success"><span class="icon icon-plus"></span>Add</button>
+            <input type="text" id="txtText" class="form-control" placeholder="Search criteria">
+            <button id="btnSearch" class="btn btn-info">Search</button>
+        </div> -->
+        
+        <!-- Search -->
+        <div class="form-group form-buttons-input">
+            <button id="btnAdd" class="btn btn-success"><span class="icon icon-plus"></span>Add</button>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search criteria"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-info"><span class="icon icon-magnifier"></span></button>
+                </span>
+            </div>
+        </div>
+
+        <div class="item checkbox checkbox-primary">
+            <input type="checkbox" id="chkActiveOnly">
+            <label for="chkActiveOnly">Active Only</label>
+        </div>
+
+
+    </div>
+    <table id="searchResults" class="table table-striped">
+    </table>
+<script>
+
+
+    let searchTableHelper = new SearchTableHelper("searchResults","records",searchTableConfig);
+    function load(){
+		searchTableHelper.search();
+    }
+    load();
+
+	searchTableHelper.onEditRow=(obj,tr)=>{
+		console.log(obj);
+		//call subPage to edit then call
+        let newObj = obj;
+		searchTableHelper.renderRow(newObj,tr); ///to update table
+    }
+
+    //Example of handling command event
+    searchTableHelper.onCommand('greeting',(obj,tr)=>{
+        buildfire.notifications.alert({
+        title:"Greetings"
+        ,message:`Hi  ${obj.data.name.firstName} ${obj.data.name.lastName}`
+        ,okButton: {text:'Ok'}
+        },function(e,data){
+             if(e) console.error(e); 
+             if(data) console.log(data);
+        });
+    });
+
+    /*
+    * Pagination is completed
+    * Sorting  TODO
+    * */
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- build:bundleWidgetBFMinJS  -->
+    <script src="../../../../../scripts/buildfire.js"></script>
+    <!-- endbuild -->
+
+    <link rel="stylesheet" href="../../css/a.css">
+    <link rel="stylesheet" href="listView.css">
+
+    <script src="../../js/shared/ui.js"></script>
+    <script src="listView.js"></script>
+
+
+    <script src="dummyData.js"></script>
+
+</head>
+<body>
+    <div id="listViewContainer">
+
+    </div>
+
+    <script>
+
+        let lv = new ListView("listViewContainer",{enableAddButton:true,Title:""});
+        lv.onAddButtonClicked=()=>{
+            let item= new ListViewItem({
+				title:"Title 1"
+                , description:"Here is my really long description. Here is my really long description. Here is my really long description. "
+				,imageUrl:"https://img.icons8.com/officel/2x/worldwide-location.png"
+
+            });
+
+            lv.addItem(item);
+        };
+
+        lv.onItemClicked= item=>{
+        	//open and maybe edit
+            item.title= "Updated " + new Date().toLocaleTimeString();
+            item.update();
+        };
+
+		lv.loadListViewItems(dummyData);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- build:bundleControlBFMinJS  -->
+    <script src="../../../../../../scripts/buildfire.js"></script>
+
+    <!-- endbuild -->
+    <link rel="stylesheet" href="../../../assets/base.css">
+    <link rel="stylesheet" href="../../../assets/linearicons/cpIcons.css">
+    <link rel="stylesheet" href="subPage.css">
+    <script src="subPage.js"></script>
+
+</head>
+<body>
+    <h4 class="section__title">Load a Sub-Screen example</h4>
+    <button class="btn btn-success" onclick="sp.showDialog({title:'New Entry',saveText:'Add',hideDelete:true },()=>{ console.log('add'); })">Add sub-screen</button>
+    <button class="btn btn-success" onclick="sp.showDialog({title:'Edit Entry',saveText:'Edit' },()=>{ console.log('edit'); },()=>{ console.log('delete'); })">Edit sub-screen</button>
+
+    <div id="details" class="subPage">
+        <div class="spHeader padded">
+            <h4 class="spHeaderText">Entity Title</h4>
+            <a><span class="icon icon-cross2 close-modal"></span></a>
+        </div>
+        <div class="modal-body padded">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputFile">File input</label>
+                <input type="file" id="exampleInputFile">
+                <p class="margin margin-y">Example block-level help text here.</p>
+            </div>
+            <div class="item checkbox checkbox-primary">
+                <input type="checkbox" id="">
+                <label for="">Check me out</label>
+            </div>
+        </div>
+        <div class="spFooter padded">
+            <button href="#" class="btn text-danger spDeleteButton">Delete</button> <button class="btn btn-success spSaveButton">Save</button>
+        </div>
+
+    </div>
+<script>
+
+    let sp = new SubPage("details");
+
+
+</script>
+</body>
+</html>

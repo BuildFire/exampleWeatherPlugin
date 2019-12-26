@@ -1,0 +1,27 @@
+{
+  "name": "buildfireplugin",
+  "version": "0.0.1",
+  "description": "template for a buildfire plugin using gulp",
+  "main": "index.js",
+  "scripts": {
+    "build": "gulp build && cd ../ && rm -rf weatherPlugin.zip && zip -r weatherPlugin.zip weatherPlugin_release && rm -rf weatherPlugin_release"
+  },
+  "author": "BuildFire",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.7.2",
+    "@babel/plugin-proposal-class-properties": "^7.7.0",
+    "@babel/preset-env": "^7.7.1",
+    "del": "^3.0.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-csso": "^3.0.0",
+    "gulp-eslint": "^4.0.0",
+    "gulp-html-replace": "^1.6.2",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-imagemin": "^6.0.0",
+    "gulp-minify": "^3.1.0",
+    "gulp-uglify": "^3.0.0"
+  }
+}
