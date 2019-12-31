@@ -1,4 +1,4 @@
-export default class Setting {
+class Setting {
     constructor(data = {}) {
         this.isActive = data.isActive || true;
         this.createdOn = data.createdOn || new Date();

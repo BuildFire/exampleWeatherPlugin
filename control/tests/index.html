@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="../../../../scripts/buildfire.min.js"></script>
+
+  <!--
+        Add more string here
+        ../../widget/js/shared/stringsConfig.js  <=========================== README
+        this file is shared with the widget.
+    -->
+
+  <!-- build:bundleSharedJSFiles  -->
+  <script src="../../widget/js/shared/authManager.js"></script>
+  <!-- endbuild -->
+
+  <!-- build:bundleJSFiles  -->
+  <script src="../../data/setting.js"></script>
+  <script src="../../dataAccess/settings.js"></script>
+  <!-- endbuild -->
+
+  <!-- build:testsJS  -->
+  <script src="../../tests/basic/settings.test.js"></script>
+  <script src="../../tests/helper.js"></script>
+  <script src="../../tests/setup.js"></script>
+  <script src="./index.js"></script>
+  <!-- endbuild -->
+
+
+</head>
+
+<body>
+
+  <h3>Tests</h3>
+  <button type="button" class="btn btn-primary" onclick="handleRunTests()">Run Tests</button>
+  <br />
+  <br />
+  <ul className="list-group" id="resultHolder" />
+
+</body>
+</html>

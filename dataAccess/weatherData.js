@@ -1,4 +1,4 @@
-export default class WeatherData {
+class WeatherData {
     static TAG = 'weather-data';
 
     /**
@@ -6,7 +6,7 @@ export default class WeatherData {
        * @param {Function} callback callback for handling response
        */
     static getAll = (options, callback) => {
-        buildfire.publicData.search(options, WeatherInfos.TAG, (err, record) => {
+        buildfire.publicData.search(options, WeatherData.TAG, (err, record) => {
             if (err) return callback(err);
             const records = record.map(data => new WeatherInfo(data));
             return callback(records);
@@ -19,7 +19,7 @@ export default class WeatherData {
        * @param {Function} callback callback for handling response
        */
     static getById = (id, callback) => {
-        buildfire.datastore.getById(id, WeatherInfos.TAG, (err, record) => {
+        buildfire.datastore.getById(id, WeatherData.TAG, (err, record) => {
             if (err) return callback(err);
 
             return callback(null, new WeatherInfo(record));
@@ -36,7 +36,7 @@ export default class WeatherData {
         data.createdOn = new Date();
         data._buildfire.index = WeatherInfo.buildIndex(data);
   
-        buildfire.publicData.insert(data, WeatherInfo.TAG, (error, record) => {
+        buildfire.publicData.insert(data, WeatherData.TAG, (error, record) => {
           if (error) return callback(error);
       
           return callback(null, new WeatherInfo(record));
@@ -51,7 +51,7 @@ export default class WeatherData {
     static set = (data, callback) => {
         data.lastUpdatedOn = new Date();
         data.lastUpdatedBy = authManager.currentUser.email;
-        buildfire.publicData.update(data.id, data, WeatherInfo.TAG, (error, record) => {
+        buildfire.publicData.update(data.id, data, WeatherData.TAG, (error, record) => {
             if (error) return callback(error);
 
             return callback(null, new WeatherInfo(record));
@@ -67,10 +67,25 @@ export default class WeatherData {
         data.deletedBy = authManager.currentUser.email;
         data.deletedOn = new Date();
         data.isActive = false;
-        buildfire.publicData.update(data.id, data, WeatherInfo.TAG, (error, record) => {
+        buildfire.publicData.update(data.id, data, WeatherData.TAG, (error, record) => {
             if (error) return callback(error);
         
             return callback(null, new WeatherInfo(record));
           });
     };
+     /**
+       * Builds index
+       * @param {Object} data data for which index will be built
+       */
+      static buildIndex = data => {
+        /**
+         * Example index 
+         * const index = {
+           text: data.firstName + ' ' + data.lastName + ' ' + data.email,
+           string1: data.email
+          };
+         */
+         const index = {};
+         return index;
+       }
 }

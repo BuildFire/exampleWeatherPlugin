@@ -1,4 +1,4 @@
-export default class WeatherInfo {
+class WeatherInfo {
     constructor(data = {}) {
         this.isActive = data.isActive || true;
         this.createdOn = data.createdOn || new Date();

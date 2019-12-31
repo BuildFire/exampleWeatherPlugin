@@ -1,4 +1,4 @@
-export default class Settings {
+class Settings {
     static TAG = 'settings';
 
     /**
@@ -12,6 +12,32 @@ export default class Settings {
             return callback(records);
         });
     };
+
+    /**
+   * Gets all barcodes
+   * @param {Function} callback callback for handling response
+   */
+  static get = (callback) => {
+    buildfire.datastore.get(Settings.TAG, (error, record) => {
+      if (error) return callback(error);
+
+      if (!record.data.place) {
+        const cmd = {
+          place: {title: "", address: {lat: null, lng: null}},
+          createdOn: new Date(),
+          createdBy: authManager.currentUser.email
+        };
+
+        buildfire.datastore.save(cmd, Settings.TAG, (error, record) => {
+          if (error) return callback(error);
+
+          return callback(null, new Setting(record.data));
+        });
+      }
+      
+      return callback(null, new Setting(record.data));
+    });
+  };
 
     /**
        * Returns settings with given id
@@ -34,11 +60,11 @@ export default class Settings {
     static add = (data, callback) => {
         data.createdBy = authManager.currentUser.email;
         data.createdOn = new Date();
-        data._buildfire.index = Setting.buildIndex(data);
   
-        buildfire.datastore.insert(data, Setting.TAG, (error, record) => {
+        buildfire.datastore.insert(data, Settings.TAG, (error, record) => {
           if (error) return callback(error);
-      
+            
+          buildfire.analytics.trackAction('location selected', { _buildfire: {  } });
           return callback(null, new Setting(record));
         });
     };
@@ -49,9 +75,14 @@ export default class Settings {
        * @param {Function} callback callback for handling response
        */
     static set = (data, callback) => {
-        data.lastUpdatedOn = new Date();
-        data.lastUpdatedBy = authManager.currentUser.email;
-        buildfire.datastore.update(data.id, data, Setting.TAG, (error, record) => {
+        const cmd = {
+            $set: {
+              place: data.place,
+              lastUpdatedOn: new Date(),
+              lastUpdatedBy: authManager.currentUser.email
+            }
+        };
+        buildfire.datastore.save(cmd, Settings.TAG, (error, record) => {
             if (error) return callback(error);
 
             return callback(null, new Setting(record));
@@ -67,7 +98,7 @@ export default class Settings {
         data.deletedBy = authManager.currentUser.email;
         data.deletedOn = new Date();
         data.isActive = false;
-        buildfire.datastore.update(data.id, data, Setting.TAG, (error, record) => {
+        buildfire.datastore.update(data.id, data, Settings.TAG, (error, record) => {
             if (error) return callback(error);
         
             return callback(null, new Setting(record));
