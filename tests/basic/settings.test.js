@@ -1,21 +1,10 @@
 class SettingsTest {
-    /**
-     * Total number of tests
-     */
-    static get testCount() {
-      return 4;
-    }
   
     /**
      * Handle finishing of each test and restore data if it is the last one
      */
     static finishTest() {
-      if (!this.finishedTests) this.finishedTests = 0;
-      this.finishedTests++;
-      if (this.finishedTests === SettingsTest.testCount) {
         Settings.set(new Setting(this.initial), () => {});
-        this.finishedTests = undefined;
-      }
     }
     initial = {};
     

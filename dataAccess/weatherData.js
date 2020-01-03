@@ -12,6 +12,32 @@ class WeatherData {
             return callback(records);
         });
     };
+  
+    /**
+    * Gets all barcodes
+    * @param {Function} callback callback for handling response
+    */
+    static get = (callback) => {
+      buildfire.datastore.get(WeatherData.TAG, (error, record) => {
+        if (error) return callback(error);
+
+        if (!record.data.place) {
+          const cmd = {
+            latestUpdate: new Date(),
+            createdOn: new Date(),
+            createdBy: authManager.currentUser.email
+          };
+
+          buildfire.datastore.save(cmd, WeatherData.TAG, (error, record) => {
+            if (error) return callback(error);
+
+            return callback(null, new WeatherInfo(record.data));
+          });
+        }
+
+        return callback(null, new WeatherInfo(record.data));
+      });
+    };
 
     /**
        * Returns weather data with given id
@@ -34,7 +60,6 @@ class WeatherData {
     static add = (data, callback) => {
         data.createdBy = authManager.currentUser.email;
         data.createdOn = new Date();
-        data._buildfire.index = WeatherInfo.buildIndex(data);
   
         buildfire.publicData.insert(data, WeatherData.TAG, (error, record) => {
           if (error) return callback(error);
@@ -48,10 +73,15 @@ class WeatherData {
        * @param {Object} data data of weather API response to be updated
        * @param {Function} callback callback for handling response
        */
-    static set = (data, callback) => {
-        data.lastUpdatedOn = new Date();
-        data.lastUpdatedBy = authManager.currentUser.email;
-        buildfire.publicData.update(data.id, data, WeatherData.TAG, (error, record) => {
+      static set = (data, callback) => {
+        const cmd = {
+            $set: {
+              place: data.latestUpdate,
+              lastUpdatedOn: new Date(),
+              lastUpdatedBy: authManager.currentUser.email
+            }
+        };
+        buildfire.datastore.save(cmd, WeatherData.TAG, (error, record) => {
             if (error) return callback(error);
 
             return callback(null, new WeatherInfo(record));
@@ -73,19 +103,4 @@ class WeatherData {
             return callback(null, new WeatherInfo(record));
           });
     };
-     /**
-       * Builds index
-       * @param {Object} data data for which index will be built
-       */
-      static buildIndex = data => {
-        /**
-         * Example index 
-         * const index = {
-           text: data.firstName + ' ' + data.lastName + ' ' + data.email,
-           string1: data.email
-          };
-         */
-         const index = {};
-         return index;
-       }
 }
