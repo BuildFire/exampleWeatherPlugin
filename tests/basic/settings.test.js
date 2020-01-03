@@ -4,7 +4,7 @@ class SettingsTest {
      * Handle finishing of each test and restore data if it is the last one
      */
     static finishTest() {
-        Settings.set(new Setting(this.initial), () => {});
+      Settings.set(new Setting(this.initial), () => {});
     }
     initial = {};
     

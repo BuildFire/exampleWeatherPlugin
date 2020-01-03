@@ -1,21 +1,10 @@
 class WeatherTest {
-    /**
-     * Total number of tests
-     */
-    static get testCount() {
-      return 4;
-    }
   
     /**
      * Handle finishing of each test and restore data if it is the last one
      */
     static finishTest() {
-      if (!this.finishedTests) this.finishedTests = 0;
-      this.finishedTests++;
-      if (this.finishedTests === WeatherTest.testCount) {
-        Settings.set(new WeatherData(this.initial), () => {});
-        this.finishedTests = undefined;
-      }
+      Settings.set(new WeatherData(this.initial), () => {});
     }
     initial = {};
     
