@@ -1,11 +1,4 @@
 class SettingsTest {
-  
-    /**
-     * Handle finishing of each test and restore data if it is the last one
-     */
-    static finishTest() {
-      Settings.set(new Setting(this.initial), () => {});
-    }
     initial = {};
     
     static run = () => {
@@ -13,16 +6,12 @@ class SettingsTest {
       test("Get settings data", () => {
         Settings.get((err, data) => {
           this.initial = data.place;
-          console.log(data);
 
           if (err) {
-            console.error(err);
             logError("Could not get settings data");
-            SettingsTest.finishTest();
             return;
           } else {
             expect("Got settings data successfully", data);
-            SettingsTest.finishTest();
           }
   
           test("Add location", () => {
@@ -37,11 +26,9 @@ class SettingsTest {
             Settings.add(testItem, (e, addData) => {
               if (e) {
                 logError("Could not add location");
-                SettingsTest.finishTest();
                 return;
               } else {
                 expect("Added location successfully", testItem);
-                SettingsTest.finishTest();
               }
                 
                 test("Update settings", () => {
@@ -54,13 +41,10 @@ class SettingsTest {
                   };
                   Settings.set(testItem, (err, updateData) => {
                     if (err) {
-                      console.error(err);
                       logError("Could not update settings");
-                      SettingsTest.finishTest();
                       return;
                     } else {
                       expect("Updated settings data successfully", updateData);
-                      SettingsTest.finishTest();
                     }
                   });
                 });

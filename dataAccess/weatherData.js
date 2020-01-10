@@ -2,7 +2,7 @@ class WeatherData {
     static TAG = 'weather-data';
 
     /**
-       * Returns weather data
+       * Returns all weather data
        * @param {Function} callback callback for handling response
        */
     static getAll = (options, callback) => {
@@ -14,7 +14,7 @@ class WeatherData {
     };
   
     /**
-    * Gets all barcodes
+    * Gets weather data
     * @param {Function} callback callback for handling response
     */
     static get = (callback) => {
@@ -25,7 +25,7 @@ class WeatherData {
           const cmd = {
             latestUpdate: new Date(),
             createdOn: new Date(),
-            createdBy: authManager.currentUser.email
+            createdBy: authManager.currentUser._id
           };
 
           buildfire.datastore.save(cmd, WeatherData.TAG, (error, record) => {
@@ -58,7 +58,7 @@ class WeatherData {
        * @param {Function} callback callback for handling response
        */
     static add = (data, callback) => {
-        data.createdBy = authManager.currentUser.email;
+        data.createdBy = authManager.currentUser._id;
         data.createdOn = new Date();
   
         buildfire.publicData.insert(data, WeatherData.TAG, (error, record) => {
@@ -78,7 +78,7 @@ class WeatherData {
             $set: {
               place: data.latestUpdate,
               lastUpdatedOn: new Date(),
-              lastUpdatedBy: authManager.currentUser.email
+              lastUpdatedBy: authManager.currentUser._id
             }
         };
         buildfire.datastore.save(cmd, WeatherData.TAG, (error, record) => {
@@ -94,7 +94,7 @@ class WeatherData {
        * @param {Function} callback callback for handling response
        */
     static delete = (data, callback) => {
-        data.deletedBy = authManager.currentUser.email;
+        data.deletedBy = authManager.currentUser._id;
         data.deletedOn = new Date();
         data.isActive = false;
         buildfire.publicData.update(data.id, data, WeatherData.TAG, (error, record) => {

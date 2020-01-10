@@ -25,7 +25,7 @@ class Settings {
         const cmd = {
           place: {title: "", address: {lat: null, lng: null}},
           createdOn: new Date(),
-          createdBy: authManager.currentUser.email
+          createdBy: authManager.currentUser._id
         };
 
         buildfire.datastore.save(cmd, Settings.TAG, (error, record) => {
@@ -58,13 +58,11 @@ class Settings {
        * @param {Function} callback callback for handling response
        */
     static add = (data, callback) => {
-        data.createdBy = authManager.currentUser.email;
+        data.createdBy = authManager.currentUser._id;
         data.createdOn = new Date();
   
         buildfire.datastore.insert(data, Settings.TAG, (error, record) => {
           if (error) return callback(error);
-            
-          buildfire.analytics.trackAction('location selected', { _buildfire: {  } });
           return callback(null, new Setting(record));
         });
     };
@@ -79,7 +77,7 @@ class Settings {
             $set: {
               place: data.place,
               lastUpdatedOn: new Date(),
-              lastUpdatedBy: authManager.currentUser.email
+              lastUpdatedBy: authManager.currentUser._id
             }
         };
         buildfire.datastore.save(cmd, Settings.TAG, (error, record) => {
@@ -95,7 +93,7 @@ class Settings {
        * @param {Function} callback callback for handling response
        */
     static delete = (data, callback) => {
-        data.deletedBy = authManager.currentUser.email;
+        data.deletedBy = authManager.currentUser._id;
         data.deletedOn = new Date();
         data.isActive = false;
         buildfire.datastore.update(data.id, data, Settings.TAG, (error, record) => {
