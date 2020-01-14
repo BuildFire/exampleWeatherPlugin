@@ -4,6 +4,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="../assets/base.css">
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+    <!-- build:bundleCSSFiles  -->
+	<link rel="stylesheet" href="css/main.css">
+    <!-- endbuild -->
 
     <!-- build:bundleControlBFMinJS  -->
     <script src="../../../../scripts/buildfire.js"></script>
@@ -14,13 +20,100 @@
      <script src="../../data/weatherInfo.js"></script>
      <script src="../../dataAccess/settings.js"></script>
      <script src="../../dataAccess/weatherData.js"></script>
+     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
      <!-- End of Scripts -->
 
+     <script>
+        function setGoogleApiScript(key) {
+          const docHead = document.getElementsByTagName("head");
+          let scriptEl = document.createElement("script");
+          scriptEl.id = "googleScript";
+          scriptEl.src =
+            "https://maps.googleapis.com/maps/api/js?key=" +
+            key +
+            "&libraries=places&callback=initializeAutocomplete";
+          docHead[0].appendChild(scriptEl);
+        }
+        buildfire.getContext((error, context) => {
+        setGoogleApiScript(context.apiKeys.googleApiKey);
+    });
+      </script>
 
 </head>
 <body>
+    <div class="content-page mdc-layout-grid">
+        <div class="mdc-layout-grid__inner">
+            <h4 class="mdc-layout-grid__cell--span-4">Use user current location</h4>
+            <div class="mdc-switch mdc-layout-grid__cell--span-4 mdc-layout-grid__cell--align-middle mdc-layout-grid--align-left" 
+            onclick="handleToggleButton()">
+                <div class="mdc-switch__track"></div>
+                <div class="mdc-switch__thumb-underlay">
+                    <div class="mdc-switch__thumb">
+                        <input type="checkbox" id="basic-switch" class="mdc-switch__native-control" role="switch">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-container">
+            <label for="mdc-text-field">City</label>
+            <div class="mdc-text-field">
+                <input type="text" class="mdc-text-field__input" id="searchTextField">
+            </div>
+        </div>
+        
+    </div>
 <script>
-   
+    initializeAutocomplete = () => {
+        const autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchTextField'));
+        google.maps.event.addListener(autocomplete, 'place_changed', () => {
+            let title = autocomplete.getPlace().formatted_address;
+            let address = {};
+            if(autocomplete.getPlace().geometry) {
+                let longitude = autocomplete.getPlace().geometry.location.lng();
+                let latitude = autocomplete.getPlace().geometry.location.lat();
+                
+                address = {
+                    lat: latitude,
+                    lng: longitude
+                }
+            }
+            const place = {
+                title,
+                address
+            }
+        })
+    }
+
+    getUserCurrentPosition = () => {
+        buildfire.geo.getCurrentPosition({}, (err, data) => {
+            if(err) return console.log(err);
+            console.log(data);
+            let address = {
+                lat: data.coords.latitude,
+                lng: data.coords.longitude
+            }
+        })
+    }
+
+    handleToggleButton = () => {
+        let toggleBtn = document.querySelector('.mdc-switch');
+        let textField = document.querySelector('.mdc-text-field');
+        let inputField = document.querySelector('.mdc-text-field__input');
+
+        if(toggleBtn.classList.contains('mdc-switch--checked')) {
+            toggleBtn.classList.remove("mdc-switch--checked");
+            textField.classList.remove('mdc-text-field--disabled');
+            inputField.classList.remove("disabled");
+        }
+        else {
+            toggleBtn.classList.add("mdc-switch--checked");
+            textField.classList.add('mdc-text-field--disabled');
+            inputField.classList.add("disabled");
+            getUserCurrentPosition();
+        }
+    }
+
 </script>
 </body>
 </html>

@@ -1,0 +1,8 @@
+.mdc-text-field {
+    height: 35px;
+    width: 100%;
+}
+.mdc-text-field input{
+    height: 35px;
+    background-color: white;
+}

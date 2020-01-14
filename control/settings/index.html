@@ -14,48 +14,7 @@
 
 </head>
 <body>
-    <div class="container-fluid">
-        <div id="loading">
-            loading...
-        </div>
-        <div id="form" class="form-horizontal hidden">
-            <div class="form-group">
-                <label for="prop1">Prop1</label>
-                <input type="email" class="form-control" id="prop1" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <label for="prop2">Prop2</label>
-                <input type="password" class="form-control" id="prop2" placeholder="Password">
-            </div>
-
-            <label>
-                <input id="prop3" type="checkbox"> Prop3
-            </label>
-
-            <div>
-                <button class="btn btn-success pull-right" onclick="save()">Submit</button>
-            </div>
-        </div>
-    </div>
     <script>
-        let settings;
-        Settings.get().then(s=>{
-        	settings=s;
-			prop1.value= s.prop1 || '';
-			prop2.value= s.prop2 || '';
-			prop3.checked = s.prop3;
-
-			loading.classList.add("hidden");
-			form.classList.remove("hidden");
-		});
-
-        function save(){
-			settings.prop1 = prop1.value;
-			settings.prop2 = prop2.value;
-			settings.prop3 = prop3.checked ;
-			settings.save();
-        }
-
     </script>
 </body>
 </html>
