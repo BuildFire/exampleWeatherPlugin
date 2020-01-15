@@ -10,9 +10,13 @@
 
     <!-- build:bundleSharedJSFiles  -->
         <script src="js/shared/infoCard.class.js"></script>
-        <script src="js/shared/settings.class.js"></script>
         <script src="js/shared/strings.js"></script>
-        <script src="js/shared/stringsConfig.js"></script>
+		<script src="js/shared/stringsConfig.js"></script>
+		<script src="../data/setting.js"></script>
+     	<script src="../data/weatherInfo.js"></script>
+     	<script src="../dataAccess/settings.js"></script>
+     	<script src="../dataAccess/weatherData.js"></script>
+     	<script src="samples/widget.js"></script>
     <!-- endbuild -->
 
 
@@ -21,42 +25,21 @@
 
 
 	<!-- build:bundleCSSFiles  -->
-
+	<link rel="stylesheet" href="css/widget.css">
     <!-- endbuild -->
 
 
 	<script>
-        /// string will have all the language settings from teh strings page on the control side
-		let strings = new buildfire.services.Strings("en-us",stringsConfig);
-		strings.init().then(s=>{
-			/// Inject into elements that have an attribute bfString
-			strings.inject(document,false);
-			//strings.get("screenOne.loading",true)},()=>{} );
-        });
-
-		buildfire.messaging.onReceivedMessage =msg=>{
-			if(msg.cmd=="refresh") /// message comes from the strings page on the control side
-				location.reload();
-		};
-
-		let settings;
-		Settings.get().then(s=>{
-			settings=s;
-			if(s.bgImageUrl) {
-				document.body.style.backgroundImage = `url(${ buildfire.imageLib.cropImage(s.bgImageUrl, {
-					width: "full",
-					height: "full"
-				}) })`;
-				document.body.style.backgroundSize = "cover";
-			}
-		});
-
+		this.initView();
     </script>
 
 </head>
 <body>
-<div class="padded">
-	<h3 bfString="screenOne.welcomeMessage">Widget - Hello, world!</h3>
-</div>
+	<div class="main__container">
+		<div class="location--title">
+			<span id="location--title"></span>
+			<span id="weather--information"></span>
+		</div>
+	</div>
 </body>
 </html>

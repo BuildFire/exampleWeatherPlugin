@@ -73,14 +73,7 @@ class Settings {
        * @param {Function} callback callback for handling response
        */
     static set = (data, callback) => {
-        const cmd = {
-            $set: {
-              place: data.place,
-              lastUpdatedOn: new Date(),
-              lastUpdatedBy: authManager.currentUser._id
-            }
-        };
-        buildfire.datastore.save(cmd, Settings.TAG, (error, record) => {
+        buildfire.datastore.save(data, Settings.TAG, (error, record) => {
             if (error) return callback(error);
 
             return callback(null, new Setting(record));

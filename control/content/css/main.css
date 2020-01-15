@@ -1,8 +1,42 @@
+.content__div {
+    margin-top: 50px;
+}
 .mdc-text-field {
     height: 35px;
     width: 100%;
 }
-.mdc-text-field input{
+.mdc-text-field input {
     height: 35px;
     background-color: white;
+}
+.mdc-layout-grid__inner {
+    margin-bottom: 20px;
+}
+.btn-container {
+    margin-top: 27px;
+}
+.btn-container  .mdc-button--unelevated {
+    background-color: #00a1f1;
+}
+.mdc-switch--checked .mdc-switch__thumb {
+    background-color: #00a1f1 !important;
+    border-color: #00a1f1 !important;
+}
+.apiKey__container {
+    display: block;
+}
+.apiKey__container input {
+    border:1px solid rgba(0,0,0,.12);
+}
+.city__container {
+    display: block;
+    margin-top: 10px;
+}
+.currentLocation__container {
+    display: inline;
+}
+
+.unit__container span{
+    font-size: 16px;
+    margin-right: 28%;
 }
