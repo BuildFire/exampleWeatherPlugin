@@ -6,6 +6,7 @@
 
     <!-- build:bundleWidgetBFMinJS  -->
 	<script src="../../../scripts/buildfire.js"></script>
+	<meta name="buildfire" content="disableTheme">
     <!-- endbuild -->
 
     <!-- build:bundleSharedJSFiles  -->
@@ -44,34 +45,37 @@
 		<div class="temperature__container">
 			<span id="weather--information"></span>
 		</div>
+		<div class="image__container">
+			<img src=".images/sunclouds.svg" id="image--information">
+		</div>
 		<div class="bottom-container mdc-layout-grid__inner">
 			<div class="mdc-layout-grid__cell">
-				<label for="wind--information">Wind</label>
+				<label for="wind--information">WIND</label>
 				<span class="mdc-layout-grid--align-right" id="wind--information"></span>
 			</div>
 			<hr role="separator" class="mdc-list-divider">
 			<div class="mdc-layout-grid__cell">
-				<label for="rain--information">Rain</label>
+				<label for="rain--information">RAIN</label>
 				<span class="mdc-layout-grid--align-right" id="rain--information"></span>
 			</div>
 			<hr role="separator" class="mdc-list-divider">
 			<div class="mdc-layout-grid__cell">
-				<label for="snow--information">Snow</label>
+				<label for="snow--information">SNOW</label>
 				<span class="mdc-layout-grid--align-right" id="snow--information"></span>
 			</div>
 			<hr role="separator" class="mdc-list-divider">
 			<div class="mdc-layout-grid__cell">
-				<label for="humidity--information">Humidity</label>
+				<label for="humidity--information">HUMIDITY</label>
 				<span class="mdc-layout-grid--align-right" id="humidity--information"></span>
 			</div>
 			<hr role="separator" class="mdc-list-divider">
 			<div class="mdc-layout-grid__cell">
-				<label for="min-temp--information">Min temperature</label>
+				<label for="min-temp--information">MIN TEMPERATURE</label>
 				<span class="mdc-layout-grid--align-right" id="min-temp--information"></span>
 			</div>
 			<hr role="separator" class="mdc-list-divider">
 			<div class="mdc-layout-grid__cell">
-				<label for="max-temp--information">Max temperature</label>
+				<label for="max-temp--information">MAX TEMPERATURE</label>
 				<span class="mdc-layout-grid--align-right" id="max-temp--information"></span>
 			</div>
 		</div>

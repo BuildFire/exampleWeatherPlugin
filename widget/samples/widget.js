@@ -4,7 +4,6 @@ fetchWeatherData = (latitude, longitude, tempUnit, apiKey, callback) => {
     fetch("https://api.openweathermap.org/data/2.5/find?appid=" + apiKey + "&lat=" + latitude + "&lon=" + longitude + tempUnit
     ).then(function (response) {
         response.json().then(function (results) {
-            console.log("????", response);
             if (results && results.list && results.list.length)
                 callback(null, results);
             else
@@ -32,7 +31,7 @@ initView = (data) => {
         weatherData = Object.assign(response.list[0]);
         
         let weatherStatus = response.list[0];
-
+        console.log(weatherStatus)
         let temperature = parseInt(weatherStatus.main.temp);
         let formatedTemperature = temperature.toString();
 
@@ -47,15 +46,15 @@ initView = (data) => {
         
         let rain;
         if (weatherStatus.rain !== null)
-            rain = (Object.values(weatherStatus.rain)[0] * 100).toString() + '%';
+            rain = Object.values(weatherStatus.rain)[0].toString() + 'mm';
         else
-            rain = '0%';
+            rain = '0mm';
         
         let snow;
         if (weatherStatus.snow !== null)
-            snow = (Object.values(weatherStatus.snow)[0] * 100).toString() + '%';
+            snow = Object.values(weatherStatus.snow).toString() + 'mm';
         else
-            snow = '0%';
+            snow = '0mm';
         
         if (data.tempUnit === 'metric') {
             formatedTemperature += ' °C';
