@@ -25,7 +25,6 @@ class WeatherData {
           const cmd = {
             latestUpdate: new Date(),
             createdOn: new Date(),
-            createdBy: authManager.currentUser._id
           };
 
           buildfire.datastore.save(cmd, WeatherData.TAG, (error, record) => {
@@ -58,9 +57,6 @@ class WeatherData {
        * @param {Function} callback callback for handling response
        */
     static add = (data, callback) => {
-        data.createdBy = authManager.currentUser._id;
-        data.createdOn = new Date();
-  
         buildfire.publicData.insert(data, WeatherData.TAG, (error, record) => {
           if (error) return callback(error);
       
@@ -76,7 +72,7 @@ class WeatherData {
       static set = (data, callback) => {
         const cmd = {
             $set: {
-              place: data.latestUpdate,
+              latestUpdate: data.latestUpdate,
               lastUpdatedOn: new Date(),
               lastUpdatedBy: authManager.currentUser._id
             }

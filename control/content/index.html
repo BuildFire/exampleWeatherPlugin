@@ -61,7 +61,7 @@
             <span>Select temperature unit</span>
             <div class="mdc-form-field">
                 <div class="mdc-radio">
-                  <input class="mdc-radio__native-control" type="radio" value="celsius" id="radio-1" name="radios">
+                  <input class="mdc-radio__native-control" type="radio" value="metric" id="radio-1" name="radios">
                   <div class="mdc-radio__background">
                     <div class="mdc-radio__outer-circle"></div>
                     <div class="mdc-radio__inner-circle"></div>
@@ -70,7 +70,7 @@
                 </div>
                 <label for="radio-1">Celsius</label>
                 <div class="mdc-radio">
-                    <input class="mdc-radio__native-control" type="radio" value="fahrenheit" id="radio-2" name="radios">
+                    <input class="mdc-radio__native-control" type="radio" value="imperial" id="radio-2" name="radios">
                     <div class="mdc-radio__background">
                       <div class="mdc-radio__outer-circle"></div>
                       <div class="mdc-radio__inner-circle"></div>
@@ -79,7 +79,7 @@
                   </div>
                   <label for="radio-2">Fahrenheit</label>
                   <div class="mdc-radio">
-                    <input class="mdc-radio__native-control" type="radio" value="kelvin" id="radio-3" name="radios">
+                    <input class="mdc-radio__native-control" type="radio" value="default" id="radio-3" name="radios">
                     <div class="mdc-radio__background">
                       <div class="mdc-radio__outer-circle"></div>
                       <div class="mdc-radio__inner-circle"></div>
@@ -141,8 +141,6 @@
             if(err) return console.log(err);
             settingsData = Object.assign(data);
             
-            let radioBtn = document.getElementById('radio-1').checked;
-            
             let toggleBtn = document.querySelector('.mdc-switch');
             let textField = document.querySelector('.city__field');
             let inputField = document.querySelector('.city__input');
@@ -158,6 +156,8 @@
                 textField.classList.remove('mdc-text-field--disabled');
                 inputField.classList.remove("disabled");
             }
+
+            setRadioBtnChecked(settingsData.tempUnit);
         });
 
         let input = document.querySelector('.apiKey__input');
@@ -239,10 +239,31 @@
             getUserCurrentPosition();
         }
     }
+
+    getRadioBtnValue = () => {
+        let radioBtn = document.getElementsByName('radios');
+        for(i = 0; i < radioBtn.length; i++) {
+            if(radioBtn[i].checked) {
+                let value = radioBtn[i].value;
+                settingsData.tempUnit = value;
+            }
+        }  
+    }
+
+    setRadioBtnChecked = (tempUnit) => {
+        if(tempUnit === 'metric')
+            document.getElementById('radio-1').checked = true;
+        else if(tempUnit === 'imperial')
+            document.getElementById('radio-2').checked = true;
+        else if(tempUnit === 'default')
+            document.getElementById('radio-3').checked = true;
+    }
     
     handleSave = () => {
+        getRadioBtnValue();
         Settings.set(settingsData, (err) => {
             if(err) return;
+            console.log(settingsData);
         });
     }
 

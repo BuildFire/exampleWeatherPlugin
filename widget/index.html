@@ -16,7 +16,8 @@
      	<script src="../data/weatherInfo.js"></script>
      	<script src="../dataAccess/settings.js"></script>
      	<script src="../dataAccess/weatherData.js"></script>
-     	<script src="samples/widget.js"></script>
+		 <script src="samples/widget.js"></script>
+		 <script src="../widget/js/shared/authManager.js"></script>
     <!-- endbuild -->
 
 
@@ -26,20 +27,64 @@
 
 	<!-- build:bundleCSSFiles  -->
 	<link rel="stylesheet" href="css/widget.css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <!-- endbuild -->
 
 
 	<script>
-		this.initView();
+		
     </script>
 
 </head>
 <body>
 	<div class="main__container">
 		<div class="location--title">
-			<span id="location--title"></span>
+			<p id="location--title"></p>
+		</div>
+		<div class="temperature__container">
 			<span id="weather--information"></span>
+		</div>
+		<div class="bottom-container mdc-layout-grid__inner">
+			<div class="mdc-layout-grid__cell">
+				<label for="wind--information">Wind</label>
+				<span class="mdc-layout-grid--align-right" id="wind--information"></span>
+			</div>
+			<hr role="separator" class="mdc-list-divider">
+			<div class="mdc-layout-grid__cell">
+				<label for="rain--information">Rain</label>
+				<span class="mdc-layout-grid--align-right" id="rain--information"></span>
+			</div>
+			<hr role="separator" class="mdc-list-divider">
+			<div class="mdc-layout-grid__cell">
+				<label for="snow--information">Snow</label>
+				<span class="mdc-layout-grid--align-right" id="snow--information"></span>
+			</div>
+			<hr role="separator" class="mdc-list-divider">
+			<div class="mdc-layout-grid__cell">
+				<label for="humidity--information">Humidity</label>
+				<span class="mdc-layout-grid--align-right" id="humidity--information"></span>
+			</div>
+			<hr role="separator" class="mdc-list-divider">
+			<div class="mdc-layout-grid__cell">
+				<label for="min-temp--information">Min temperature</label>
+				<span class="mdc-layout-grid--align-right" id="min-temp--information"></span>
+			</div>
+			<hr role="separator" class="mdc-list-divider">
+			<div class="mdc-layout-grid__cell">
+				<label for="max-temp--information">Max temperature</label>
+				<span class="mdc-layout-grid--align-right" id="max-temp--information"></span>
+			</div>
 		</div>
 	</div>
 </body>
+<script>
+	Settings.get((err, data) => {
+			if (err) return console.log(err);
+			this.initView(data);
+		});
+
+	Settings.update((event) => {
+		this.initView(event.data);
+	})
+</script>
 </html>

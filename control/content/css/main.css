@@ -40,3 +40,10 @@
     font-size: 16px;
     margin-right: 28%;
 }
+.mdc-radio__outer-circle {
+    border-color: #00a1f1 !important;
+}
+
+.mdc-radio__inner-circle {
+    border-color: #00a1f1 !important;
+}
