@@ -14,18 +14,17 @@
     <!-- build:bundleControlBFMinJS  -->
     <script src="../../../../scripts/buildfire.js"></script>
     <!-- endbuild -->
-
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>    
      <!-- build:bundleJSFiles  -->
      <script src="../../data/setting.js"></script>
      <script src="../../data/weatherInfo.js"></script>
      <script src="../../dataAccess/settings.js"></script>
      <script src="../../dataAccess/weatherData.js"></script>
-     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-     <!-- End of Scripts -->
+      <!-- endbuild -->
 
      <!-- build:bundleSharedJSFiles  -->
      <script src="../../widget/js/shared/authManager.js"></script>
-     <!-- End of Scripts -->
+      <!-- endbuild -->
 
      <script>
         function setGoogleApiScript(key) {
@@ -276,7 +275,7 @@
     
     handleSave = () => {
         getRadioBtnValue();
-        this.Settings.set(settingsData, (err) => {
+        Settings.set(settingsData, (err) => {
             if(err) return;
         });
     }

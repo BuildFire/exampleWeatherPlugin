@@ -17,15 +17,14 @@
     <script src="../data/weatherInfo.js"></script>
     <script src="../dataAccess/settings.js"></script>
     <script src="../dataAccess/weatherData.js"></script>
-    <script src="./samples/widget.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:bundleSharedJSFiles  -->
 	<script src="js/shared/infoCard.class.js"></script>
     <script src="js/shared/strings.js"></script>
 	<script src="js/shared/stringsConfig.js"></script>
-	<script src="../../widget/js/shared/authManager.js"></script>
-	<!-- End of Scripts -->
+	<script src="../widget/js/shared/authManager.js"></script>
+	<!-- endbuild -->
 
 
 </head>
@@ -40,22 +39,22 @@
 		</div>
 		<div class="bottom-container mdc-layout-grid__inner">
 			<div class="mdc-layout-grid__cell">
-				<label for="wind--information">WIND</label>
+				<label for="wind--information">Wind</label>
 				<span class="mdc-layout-grid--align-right" id="wind--information"></span>
 			</div>
 			<hr role="separator" class="mdc-list-divider">
 			<div class="mdc-layout-grid__cell">
-				<label for="humidity--information">HUMIDITY</label>
+				<label for="humidity--information">Humidity</label>
 				<span class="mdc-layout-grid--align-right" id="humidity--information"></span>
 			</div>
 			<hr role="separator" class="mdc-list-divider">
 			<div class="mdc-layout-grid__cell">
-				<label for="min-temp--information">MIN TEMPERATURE</label>
+				<label for="min-temp--information">Min temperature</label>
 				<span class="mdc-layout-grid--align-right" id="min-temp--information"></span>
 			</div>
 			<hr role="separator" class="mdc-list-divider">
 			<div class="mdc-layout-grid__cell">
-				<label for="max-temp--information">MAX TEMPERATURE</label>
+				<label for="max-temp--information">Max temperature</label>
 				<span class="mdc-layout-grid--align-right" id="max-temp--information"></span>
 			</div>
 		</div>
@@ -131,14 +130,14 @@ initView = (data) => {
         }
             
         else if (data.tempUnit === 'imperial') {
-            formatedTemperature += ' F';
-            formatedMinTemperature += ' F';
-            formatedMaxTemperature += ' F';
+            formatedTemperature += 'F';
+            formatedMinTemperature += 'F';
+            formatedMaxTemperature += 'F';
         }
         else {
-            formatedTemperature += ' K';
-            formatedMinTemperature += ' K';
-            formatedMaxTemperature += ' K';
+            formatedTemperature += 'K';
+            formatedMinTemperature += 'K';
+            formatedMaxTemperature += 'K';
         }
 
         if (weatherStatus.clouds.all > 50 && !weatherStatus.rain && !weatherStatus.snow) {

@@ -4,7 +4,7 @@
   "description": "template for a buildfire plugin using gulp",
   "main": "index.js",
   "scripts": {
-    "build": "gulp build && cd ../ && rm -rf exampleWeatherPlugin.zip && zip -r exampleWeatherPlugin.zip exampleWeatherPlugin_release && rm -rf exampleWeatherPlugin_release"
+    "build": "gulp build && cd ../ && rm -rf exampleWeatherPlugin.zip && zip -r exampleWeatherPlugin.zip exampleWeatherPlugin_release"
   },
   "author": "BuildFire",
   "license": "ISC",
