@@ -15,12 +15,15 @@
     <script src="../../../../scripts/buildfire.js"></script>
     <!-- endbuild -->
 
-     <!-- build:bundleDataJSFiles  -->
+     <!-- build:bundleJSFiles  -->
      <script src="../../data/setting.js"></script>
      <script src="../../data/weatherInfo.js"></script>
      <script src="../../dataAccess/settings.js"></script>
      <script src="../../dataAccess/weatherData.js"></script>
      <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+     <!-- End of Scripts -->
+
+     <!-- build:bundleSharedJSFiles  -->
      <script src="../../widget/js/shared/authManager.js"></script>
      <!-- End of Scripts -->
 
@@ -37,7 +40,7 @@
         }
         buildfire.getContext((error, context) => {
             if(error) return console.log(error);
-        setGoogleApiScript(context.apiKeys.googleApiKey);
+            setGoogleApiScript(context.apiKeys.googleApiKey);
         });
       </script>
 
@@ -167,9 +170,21 @@
         });
     }
     initializeAutocomplete = () => {
-        const autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchTextField'));
+        var options = {
+            types: ['(cities)']
+        };
+        const autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchTextField'), options);
         google.maps.event.addListener(autocomplete, 'place_changed', () => {
-            let title = autocomplete.getPlace().formatted_address;
+            
+            let address_components = autocomplete.getPlace().address_components;
+        
+            let cityNames = address_components.filter(add => add.types.includes('locality'));
+            let title;
+            if(cityNames)
+                title = cityNames[0].long_name;
+            else 
+                title = autocomplete.getPlace().formatted_address;
+
             let address = {};
             if(autocomplete.getPlace().geometry) {
                 let longitude = autocomplete.getPlace().geometry.location.lng();
@@ -261,9 +276,8 @@
     
     handleSave = () => {
         getRadioBtnValue();
-        Settings.set(settingsData, (err) => {
+        this.Settings.set(settingsData, (err) => {
             if(err) return;
-            console.log(settingsData);
         });
     }
 

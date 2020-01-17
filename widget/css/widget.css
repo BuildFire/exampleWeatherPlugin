@@ -1,16 +1,8 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700);
-@font-face {
-    font-family: 'weathericons';
-    src: url("https://cdnjs.cloudflare.com/ajax/libs/weather-icons/1.2/fonts/weathericons-regular-webfont.eot");
-    src: url("https://cdnjs.cloudflare.com/ajax/libs/weather-icons/1.2/fonts/weathericons-regular-webfont.eot?#iefix") format("embedded-opentype"), url("//cdnjs.cloudflare.com/ajax/libs/weather-icons/1.2/fonts/weathericons-regular-webfont.woff") format("woff"), url("//cdnjs.cloudflare.com/ajax/libs/weather-icons/1.2/fonts/weathericons-regular-webfont.ttf") format("truetype"), url("//cdnjs.cloudflare.com/ajax/libs/weather-icons/1.2/fonts/weathericons-regular-webfont.svg") format("svg");
-    font-weight: normal;
-    font-style: normal;
-}
 .main__container{
     width: 100%;
     height: 100%;
     background-color: #DEDAD9;
-    background-image: linear-gradient(to bottom,  #DEDAD9, #C1C0C0, #333332);
+    background-image: linear-gradient(to left top, #051237, #004375, #007aa2, #00b3b4, #12eba9);
     color: white;
     overflow: hidden;
     position: relative;
@@ -25,35 +17,43 @@
     text-transform: uppercase;
 }
 .main__container .location--title {
-    text-align: center;
-    padding: 2%;
+    padding-left: 5%;
+    padding-top: 15%;
 }
 .main__container .location--title p{ 
     font-size: 10vw;
-    font-family: Impact, Charcoal, sans-serif;
-    letter-spacing: 0.8px;
-    word-spacing: 0.4px;
-    font-weight: 700;
+    font-family: Georgia, serif;
+    letter-spacing: 2px;
+    word-spacing: 2px;
+    color: #000000;
+    font-weight: normal;
     text-decoration: none;
-    font-style: italic;
+    font-style: normal;
     font-variant: normal;
-    text-transform: uppercase;  
+    text-transform: none;
 }
 .temperature__container {
     margin-top: 30%;
+    /* float: left; */
 }
 .temperature__container span {
     padding-left: 5%;
-    color: white;
-    font-size: 50px;
-    font-family: Impact, Charcoal, sans-serif;
-    letter-spacing: 0.8px;
-    word-spacing: 0.4px;
-    font-weight: 700;
+    color: black;
+    font-size: 10vw;
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    letter-spacing: 2px;
+    word-spacing: 2px;
+    font-weight: normal;
     text-decoration: none;
-    font-style: italic;
+    font-style: normal;
     font-variant: normal;
-    text-transform: uppercase;
+    text-transform: none;
+}
+.temperature__container img {
+    float: right;
+    padding-right: 5%;
+    width: 60vw;
+
 }
 .bottom-container {
     position: absolute;

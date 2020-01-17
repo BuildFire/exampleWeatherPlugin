@@ -107,9 +107,14 @@ const jsTasks=[
     ,{name:"controlDesignJS",src:"control/design/js/*.js",dest:"/control/design"}
     ,{name:"controlSettingsJS",src:"control/settings/js/*.js",dest:"/control/settings"}
 	,{name:"controlStringsJS",src:"control/strings/js/*.js",dest:"/control/strings"}
-	//data, data access, tests and analytics
-	,{name:"dataJS",src:["data/*.js", "dataAccess/*.js"],dest:"/data"}
-	,{name:"testsJS",src:["tests/*.js", "tests/basic/*.js", "test/screens/*.js"],dest:"/tests"}
+	//data and analytics
+	,{ name: "controlStringsJS", src: "control/strings/js/*.js", dest: "/control/strings" }
+	,{name:"controlContentJS",src:["data/*.js", "dataAccess/*.js", "analytics/*.js", "control/content/js/*.js",],dest:"/control/content"}
+	,{name:"controlDesignJS",src:["data/*.js", "dataAccess/*.js", "analytics/*.js", "control/design/js/*.js"],dest:"/control/design"}
+	,{name:"controlSettingsJS",src:["data/*.js", "dataAccess/*.js", "analytics/*.js", "control/settings/js/*.js"],dest:"/control/settings"}
+	,{name:"controlTestsDataJS",src:["data/*.js", "dataAccess/*.js", "analytics/*.js"],dest:"/control/tests"}
+	,{name:"widgetDataJS",src:["data/*.js", "dataAccess/*.js", "analytics/*.js"],dest:"/widget"}
+	,{name:"testsJS",src:["tests/*.js", "tests/basic/*.js"],dest:"/tests"}
 ];
 
 
@@ -149,10 +154,7 @@ gulp.task('controlHTML', function(){
 			bundleSharedJSFiles:"../../widget/scripts.shared-min.js?v=" + version
             ,bundleJSFiles:"scripts-min.js?v=" + version
             ,bundleCSSFiles:"styles.min.css?v=" + version
-			,bundleControlBFMinJS:"../../../../scripts/buildfire.min.js"
-			,bundleWidgetBFMinJS:"../../../scripts/buildfire.min.js"
-			//data, data access, tests and analytics
-			,bundleDataJSFiles:"../../data/scripts-min.js?v=" + version
+			,bundleControlBFMinJS:"../../../../scripts/buildfire.js"
 			,bundleTestsJSFiles:"../../tests/scripts-min.js?v=" + version
         }))
         .pipe(minHTML({removeComments:true,collapseWhitespace:true}))
@@ -162,12 +164,10 @@ gulp.task('controlHTML', function(){
 gulp.task('widgetHTML', function(){
 	return gulp.src(['widget/*.html'],{base: '.'})
 		.pipe(htmlReplace({
-			bundleSharedJSFiles:"scripts.shared-min.js?v=" + version
+			bundleSharedJSFiles: "scripts.shared-min.js?v=" + version
+			,bundleWidgetBFMinJS:"../../../scripts/buildfire.js"
 			,bundleJSFiles:"scripts-min.js?v=" + version
 			,bundleCSSFiles:"styles.min.css?v=" + version
-			//data, data access and tests
-			,bundleDataJSFiles:"../../data/scripts-min.js?v=" + version
-			,bundleTestsJSFiles:"../../tests/scripts-min.js?v=" + version
 		}))
 		.pipe(minHTML({removeComments:true,collapseWhitespace:true}))
 		.pipe(gulp.dest(destinationFolder));
