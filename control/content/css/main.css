@@ -25,9 +25,9 @@
 .apiKey__container {
     display: block;
 }
-.apiKey__container input {
+/* .apiKey__container input {
     border:1px solid rgba(0,0,0,.12);
-}
+} */
 .city__container {
     display: block;
     margin-top: 10px;
