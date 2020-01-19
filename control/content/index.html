@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
 
     <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -13,19 +14,8 @@
     <!-- build:bundleControlBFMinJS  -->
     <script src="../../../../scripts/buildfire.js"></script>
     <!-- endbuild -->
-    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>    
-     <!-- build:bundleJSFiles  -->
-     <script src="../../data/setting.js"></script>
-     <script src="../../data/weatherInfo.js"></script>
-     <script src="../../dataAccess/settings.js"></script>
-     <script src="../../dataAccess/weatherData.js"></script>
-      <!-- endbuild -->
 
-     <!-- build:bundleSharedJSFiles  -->
-     <script src="../../widget/js/shared/authManager.js"></script>
-      <!-- endbuild -->
-
-     <script>
+    <script>
         function setGoogleApiScript(key) {
           const docHead = document.getElementsByTagName("head");
           let scriptEl = document.createElement("script");
@@ -41,6 +31,19 @@
             setGoogleApiScript(context.apiKeys.googleApiKey);
         });
       </script>
+
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>    
+
+     <!-- build:bundleJSFiles  -->
+     <script src="../../data/setting.js"></script>
+     <script src="../../data/weatherInfo.js"></script>
+     <script src="../../dataAccess/settings.js"></script>
+     <script src="../../dataAccess/weatherData.js"></script>
+      <!-- endbuild -->
+
+     <!-- build:bundleSharedJSFiles  -->
+     <script src="../../widget/js/shared/authManager.js"></script>
+      <!-- endbuild -->
 
 </head>
 <body>
@@ -117,26 +120,7 @@
         
     </div>
 <script>
-    var settingsData = {
-        isActive: null,
-        createdOn: '',
-        createdBy: '',
-        lastUpdatedOn: '',
-        lastUpdatedBy: '',
-        deletedOn: '',
-        deletedBy: '',
-
-        apiKey: '',
-        tempUnit: '',
-        useUserCurrentLocation: '',
-        place: {
-            title: '',
-            address: {
-                lat: '',
-                lng: ''
-            }
-        }
-    };
+    var settingsData;
     window.onload = () => {
         Settings.get((err, data) => {
             if(err) return console.log(err);
@@ -167,15 +151,22 @@
             settingsData.apiKey = event.target.value;
         });
     }
+    calcTime = (offset) => {
+        let d = new Date();
+           
+        let utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+        let nd = new Date(utc + (60000 * offset));
+    }
     initializeAutocomplete = () => {
-        var options = {
+        let options = {
             types: ['(cities)']
         };
         const autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchTextField'), options);
         google.maps.event.addListener(autocomplete, 'place_changed', () => {
             
             let address_components = autocomplete.getPlace().address_components;
-        
+            let offset = autocomplete.getPlace().utc_offset_minutes;
+            calcTime(offset);
             let cityNames = address_components.filter(add => add.types.includes('locality'));
             let title;
             if(cityNames)

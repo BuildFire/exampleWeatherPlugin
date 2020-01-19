@@ -2,12 +2,15 @@
     margin-top: 50px;
 }
 .mdc-text-field {
-    height: 35px;
     width: 100%;
 }
 .mdc-text-field input {
     height: 35px;
     background-color: white;
+    font-size: 14px;
+}
+.mdc-form-field label {
+    font-size: 14px;
 }
 .mdc-layout-grid__inner {
     margin-bottom: 20px;
@@ -25,20 +28,22 @@
 .apiKey__container {
     display: block;
 }
-/* .apiKey__container input {
-    border:1px solid rgba(0,0,0,.12);
-} */
+.apiKey__container .mdc-text-field {
+    height: 35px;
+}
 .city__container {
     display: block;
-    margin-top: 10px;
+    margin-top: 20px;
+}
+.city__container .mdc-text-field {
+    height: 35px;
 }
 .currentLocation__container {
     display: inline;
 }
 
 .unit__container span{
-    font-size: 16px;
-    margin-right: 28%;
+    font-size: 18px;
 }
 .mdc-radio__outer-circle {
     border-color: #00a1f1 !important;
@@ -46,4 +51,11 @@
 
 .mdc-radio__inner-circle {
     border-color: #00a1f1 !important;
+}
+.unit__container .mdc-form-field {
+    float: right;
+    margin-top: -10px;
+}
+.mdc-form-field {
+    font-family: 'Muli', sans-serif;
 }

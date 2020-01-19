@@ -18,21 +18,8 @@ class WeatherData {
     * @param {Function} callback callback for handling response
     */
     static get = (callback) => {
-      buildfire.datastore.get(WeatherData.TAG, (error, record) => {
+      buildfire.publicData.get(WeatherData.TAG, (error, record) => {
         if (error) return callback(error);
-
-        if (!record.data.place) {
-          const cmd = {
-            latestUpdate: new Date(),
-            createdOn: new Date(),
-          };
-
-          buildfire.datastore.save(cmd, WeatherData.TAG, (error, record) => {
-            if (error) return callback(error);
-
-            return callback(null, new WeatherInfo(record.data));
-          });
-        }
 
         return callback(null, new WeatherInfo(record.data));
       });
@@ -44,7 +31,7 @@ class WeatherData {
        * @param {Function} callback callback for handling response
        */
     static getById = (id, callback) => {
-        buildfire.datastore.getById(id, WeatherData.TAG, (err, record) => {
+        buildfire.publicData.getById(id, WeatherData.TAG, (err, record) => {
             if (err) return callback(err);
 
             return callback(null, new WeatherInfo(record));
@@ -70,14 +57,7 @@ class WeatherData {
        * @param {Function} callback callback for handling response
        */
       static set = (data, callback) => {
-        const cmd = {
-            $set: {
-              latestUpdate: data.latestUpdate,
-              lastUpdatedOn: new Date(),
-              lastUpdatedBy: authManager.currentUser._id
-            }
-        };
-        buildfire.datastore.save(cmd, WeatherData.TAG, (error, record) => {
+        buildfire.publicData.save(data, WeatherData.TAG, (error, record) => {
             if (error) return callback(error);
 
             return callback(null, new WeatherInfo(record));

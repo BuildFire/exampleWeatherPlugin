@@ -3,29 +3,30 @@
     height: 100%;
     background-color: #DEDAD9;
     background-image: linear-gradient(to left top, #051237, #004375, #007aa2, #00b3b4, #12eba9);
-    color: white;
     overflow: hidden;
     position: relative;
     white-space:nowrap;
-    font-family: Impact, Charcoal, sans-serif;
     letter-spacing: 0.8px;
     word-spacing: 0.4px;
     font-weight: 700;
     text-decoration: none;
     font-style: italic;
     font-variant: normal;
-    text-transform: uppercase;
 }
 .main__container .location--title {
     padding-left: 5%;
     padding-top: 15%;
+    margin-top: 12%;
 }
-.main__container .location--title p{ 
-    font-size: 10vw;
+.location--title #weather--description {
+    font-size: 12px;
+    padding-left: 10%;
+}
+.main__container .location--title span{ 
+    font-size: 14vw;
     font-family: Georgia, serif;
     letter-spacing: 2px;
     word-spacing: 2px;
-    color: #000000;
     font-weight: normal;
     text-decoration: none;
     font-style: normal;
@@ -33,14 +34,19 @@
     text-transform: none;
 }
 .temperature__container {
-    margin-top: 30%;
-    /* float: left; */
+    height: 30%;
+    width: 50vw;
+    position: relative;
+    float: right;
 }
-.temperature__container span {
-    padding-left: 5%;
-    color: black;
-    font-size: 10vw;
-    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+.location--title .span-temperature {
+    width: 30vw;
+    padding-top: 20%;
+    position: absolute;
+}
+.location--title .span-temperature span {
+    padding-right: 5%;
+    font-size: 14vw;
     letter-spacing: 2px;
     word-spacing: 2px;
     font-weight: normal;
@@ -49,15 +55,26 @@
     font-variant: normal;
     text-transform: none;
 }
-.temperature__container img {
+.temperature__container .img-temperature {
     float: right;
+    position: absolute;
+    right: 5%;
+}
+.temperature__container .span-temperature {
+    float: right;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding-right: 13%;
+}
+.temperature__container img {
     padding-right: 5%;
-    width: 60vw;
+    width: 42vw;
 
 }
 .bottom-container {
     position: absolute;
-    bottom: 2%;
+    bottom: 5%;
     display: inline-block;
     width:100%;
     padding: 5%;
@@ -95,4 +112,39 @@
 .bottom-container hr {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+.rotate {
+    animation: rotation 4s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+}
+.last--updated {
+    padding-left: 5%;
+    padding-top: 5%;
+    float: left;
+    width: 100vw;
+}
+
+.last--updated span {
+    font-size: small;
+}
+.refresh--button {
+    width: 100vw;
+    position: absolute;
+    bottom: 0;
+}
+.refresh--button .mdc-button {
+    width: 100vw;
+    height: 50px;
+}
+.refresh--button button span{
+    color: white;
+    font-size: 14px;
 }

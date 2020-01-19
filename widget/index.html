@@ -2,6 +2,10 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 	<!-- build:bundleCSSFiles  -->
 	<link rel="stylesheet" href="css/widget.css">
@@ -11,6 +15,8 @@
     <!-- build:bundleWidgetBFMinJS  -->
 	<script src="../../../scripts/buildfire.js"></script>
     <!-- endbuild -->
+
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>    
 	
 	<!-- build:bundleJSFiles  -->
 	<script src="../data/setting.js"></script>
@@ -30,12 +36,20 @@
 </head>
 <body>
 	<div class="main__container">
+        <div class="last--updated" id="last--updated"></div>
 		<div class="location--title">
-			<p id="location--title"></p>
+            <span id="location--title"></span>
+            <br/>
+            <span id="weather--description"></span>
+            <br/>
+            <div class="span-temperature">
+                <span id="weather--information"></span>
+            </div>
 		</div>
 		<div class="temperature__container" id="temperature__container">
-			<span id="weather--information"></span>
-			<img id="image--information">
+            <div class="img-temperature">
+                <img id="image--information">
+            </div>       
 		</div>
 		<div class="bottom-container mdc-layout-grid__inner">
 			<div class="mdc-layout-grid__cell">
@@ -56,21 +70,36 @@
 			<div class="mdc-layout-grid__cell">
 				<label for="max-temp--information">Max temperature</label>
 				<span class="mdc-layout-grid--align-right" id="max-temp--information"></span>
-			</div>
-		</div>
+            </div>
+            <hr role="separator" class="mdc-list-divider">   
+        </div>
+        <div class="refresh--button">
+            <button class="mdc-button" onclick="handleButtonRefresh()">
+                <div class="mdc-button__ripple"></div>
+                <span class="mdc-button__label">Refresh</span>
+              </button>
+        </div>
 	</div>
 <script>
-	window.onload = (event) => {
-		Settings.get((err, data) => {
-			if (err) return console.log(err);
-			this.initView(data);
-		});
+window.onload = (event) => {
+    Settings.get((err, data) => {
+        if(err) return console.log(err);
+        renderPage(data);
+    });
 
-		Settings.update((event) => {
-			this.initView(event.data);
-		});
-	}
-	fetchWeatherData = (latitude, longitude, tempUnit, apiKey, callback) => {
+    Settings.update((event) => {
+        refreshWeatherData(event.data);
+    });
+}
+
+handleButtonRefresh = () => {
+    Settings.get((err, data) => {
+        if(err) return console.log(err);
+        refreshWeatherData(data);
+    });
+}
+
+fetchWeatherData = (latitude, longitude, tempUnit, apiKey, callback) => {
     /// Call open weather API to pull data
     fetch("https://api.openweathermap.org/data/2.5/find?appid=" + apiKey + "&lat=" + latitude + "&lon=" + longitude + tempUnit
     ).then(function (response) {
@@ -85,87 +114,94 @@
     });
 };
 
-initView = (data) => {
-
+refreshWeatherData = (results) => {
     let tempUnit;
-    if (data.tempUnit === 'metric')
+
+    if (results.tempUnit === 'metric')
         tempUnit = '&units=metric';
-    else if (data.tempUnit === 'imperial')
-        tempUnit = '&units=imperial';
+    else if (results.tempUnit === 'imperial')
+            tempUnit = '&units=imperial';
     else
         tempUnit = '';
 
-    fetchWeatherData(data.place.address.lat, data.place.address.lng, tempUnit, data.apiKey, (err, response) => {
+    fetchWeatherData(results.place.address.lat, results.place.address.lng, tempUnit, results.apiKey, (err, response) => {
         if (err) return console.log(err);
+        
         let weatherStatus = response.list[0];
-        console.log(weatherStatus);
-        let temperature = parseInt(weatherStatus.main.temp);
-        let formatedTemperature = temperature.toString();
-
-        let minTemperature = parseInt(weatherStatus.main.temp_min);
-        let formatedMinTemperature = minTemperature.toString();
-
-        let maxTemperature = parseInt(weatherStatus.main.temp_max);
-        let formatedMaxTemperature = maxTemperature.toString();
-
-        let wind = weatherStatus.wind.speed.toString() + 'mph';
-        let humidity = weatherStatus.main.humidity.toString() + "%";
-        
-        let rain;
-        if (weatherStatus.rain !== null)
-            rain = Object.values(weatherStatus.rain)[0].toString() + 'mm';
-        else
-            rain = '0mm';
-        
-        let snow;
-        if (weatherStatus.snow !== null)
-            snow = Object.values(weatherStatus.snow).toString() + 'mm';
-        else
-            snow = '0mm';
-        
-        if (data.tempUnit === 'metric') {
-            formatedTemperature += ' °C';
-            formatedMinTemperature += ' °C';
-            formatedMaxTemperature += ' °C';
-        }
-            
-        else if (data.tempUnit === 'imperial') {
-            formatedTemperature += 'F';
-            formatedMinTemperature += 'F';
-            formatedMaxTemperature += 'F';
-        }
-        else {
-            formatedTemperature += 'K';
-            formatedMinTemperature += 'K';
-            formatedMaxTemperature += 'K';
-        }
-
-        if (weatherStatus.clouds.all > 50 && !weatherStatus.rain && !weatherStatus.snow) {
-            this.createWeatherElement('.images/iconfinder_Overcast.ico');
-        }
-        else if (weatherStatus.rain && !weatherStatus.snow) {
-            this.createWeatherElement('.images/iconfinder_Hail_Heavy.ico');
-        }
-        else if (weatherStatus.snow && !weatherStatus.rain) {
-            this.createWeatherElement('.images/iconfinder_Snow_Occasional.ico');
-        }
-        else {
-            this.createWeatherElement('.images/iconfinder_Sunny.ico');
-        }
-            
-        document.getElementById('location--title').innerHTML = data.place.title;
-        document.getElementById('weather--information').innerHTML = formatedTemperature;
-        document.getElementById('wind--information').innerHTML = wind;
-        document.getElementById('humidity--information').innerHTML = humidity;
-        document.getElementById('min-temp--information').innerHTML = formatedMinTemperature;
-        document.getElementById('max-temp--information').innerHTML = formatedMaxTemperature;
+        let _date = new Date();
+        weatherStatus.latestUpdate = _date.toLocaleString();
+        WeatherData.set(weatherStatus, (err, res) => {
+            if (err) return console.log(err);
+            renderPage(results);
+        });
     });
-};
+}
+let timeElement = document.createElement('span');
+
+showElements = (weatherStatus, results) => {
+    let temperature = parseInt(weatherStatus.main.temp);
+    let formatedTemperature = temperature.toString();
+    let minTemperature = parseInt(weatherStatus.main.temp_min);
+    let formatedMinTemperature = minTemperature.toString();
+    let maxTemperature = parseInt(weatherStatus.main.temp_max);
+    let formatedMaxTemperature = maxTemperature.toString();
+    let wind = weatherStatus.wind.speed.toString() + 'mph';
+    let humidity = weatherStatus.main.humidity.toString() + "%"
+    let weatherDescription = weatherStatus.weather[0].description;
+    if(weatherStatus.latestUpdate !== null) {
+        let date = weatherStatus.latestUpdate;
+        let formated_date = date.toLocaleString();
+        timeElement.innerHTML = 'Latest update: ' + formated_date;
+        document.getElementById('last--updated').appendChild(timeElement);
+    }
+    
+    if (results.tempUnit === 'metric') {
+        formatedTemperature += '°C';
+        formatedMinTemperature += '°C';
+        formatedMaxTemperature += '°C';
+    }
+    else if (results.tempUnit === 'imperial') {
+        formatedTemperature += '°';
+        formatedMinTemperature += '°';
+        formatedMaxTemperature += '°';
+    }
+    else {
+        formatedTemperature += 'K';
+        formatedMinTemperature += 'K';
+        formatedMaxTemperature += 'K';
+    }
+
+    if (weatherStatus.clouds.all > 50 && !weatherStatus.rain && !weatherStatus.snow) {
+        this.createWeatherElement('images/iconfinder_Overcast.ico');
+    }
+    else if (weatherStatus.rain && !weatherStatus.snow) {
+        this.createWeatherElement('images/iconfinder_Hail_Heavy.ico');
+    }
+    else if (weatherStatus.snow && !weatherStatus.rain) {
+        this.createWeatherElement('images/iconfinder_Snow_Occasional.ico');
+    }
+    else {
+        this.createWeatherElement('images/iconfinder_Sunny.ico');
+    }
+    document.getElementById('weather--information').innerHTML = formatedTemperature;
+    document.getElementById('wind--information').innerHTML = wind;
+    document.getElementById('humidity--information').innerHTML = humidity;
+    document.getElementById('min-temp--information').innerHTML = formatedMinTemperature;
+    document.getElementById('max-temp--information').innerHTML = formatedMaxTemperature;
+    document.getElementById('weather--description').innerHTML = weatherDescription
+}
+
+renderPage = (results) => {
+    document.getElementById('location--title').innerHTML = results.place.title;
+    WeatherData.get((err, response) => {
+        if (err) return console.log(err);
+        showElements(response, results);
+    });
+}
 
 createWeatherElement = (attr) => {
     document.getElementById('image--information').setAttribute('src', attr);
-};
-    
+};    
 </script>
 </body>
 </html>
