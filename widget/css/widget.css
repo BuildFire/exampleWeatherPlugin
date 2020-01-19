@@ -1,37 +1,31 @@
 .main__container{
     width: 100%;
     height: 100%;
-    background-color: #DEDAD9;
     background-image: linear-gradient(to left top, #051237, #004375, #007aa2, #00b3b4, #12eba9);
     overflow: hidden;
     position: relative;
-    white-space:nowrap;
-    letter-spacing: 0.8px;
-    word-spacing: 0.4px;
-    font-weight: 700;
-    text-decoration: none;
-    font-style: italic;
-    font-variant: normal;
 }
 .main__container .location--title {
     padding-left: 5%;
+    padding-right: 5%;
     padding-top: 15%;
     margin-top: 12%;
+    width: 100vw;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+
 }
 .location--title #weather--description {
     font-size: 12px;
-    padding-left: 10%;
+    padding-top: 5%;
 }
 .main__container .location--title span{ 
-    font-size: 14vw;
-    font-family: Georgia, serif;
-    letter-spacing: 2px;
-    word-spacing: 2px;
-    font-weight: normal;
-    text-decoration: none;
-    font-style: normal;
-    font-variant: normal;
-    text-transform: none;
+    font-size: 10vw;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 .temperature__container {
     height: 30%;
@@ -47,13 +41,6 @@
 .location--title .span-temperature span {
     padding-right: 5%;
     font-size: 14vw;
-    letter-spacing: 2px;
-    word-spacing: 2px;
-    font-weight: normal;
-    text-decoration: none;
-    font-style: normal;
-    font-variant: normal;
-    text-transform: none;
 }
 .temperature__container .img-temperature {
     float: right;
@@ -69,7 +56,7 @@
 }
 .temperature__container img {
     padding-right: 5%;
-    width: 42vw;
+    width: 60vw;
 
 }
 .bottom-container {
@@ -78,52 +65,13 @@
     display: inline-block;
     width:100%;
     padding: 5%;
-    font-family: Georgia, serif;
-    letter-spacing: 2px;
-    word-spacing: 2px;
-    font-weight: normal;
-    text-decoration: none;
-    font-style: normal;
-    font-variant: normal;
-    text-transform: none;
-    
 }
 .bottom-container span {
     float: right;
-    font-family: Georgia, serif;
-    letter-spacing: 2px;
-    word-spacing: 2px;
-    font-weight: normal;
-    text-decoration: none;
-    font-style: normal;
-    font-variant: normal;
-    text-transform: none;
-}
-.bottom-container label {
-    font-family: Georgia, serif;
-    letter-spacing: 2px;
-    word-spacing: 2px;
-    font-weight: normal;
-    text-decoration: none;
-    font-style: normal;
-    font-variant: normal;
-    text-transform: none;
 }
 .bottom-container hr {
     margin-top: 10px;
     margin-bottom: 10px;
-}
-.rotate {
-    animation: rotation 4s infinite linear;
-}
-
-@keyframes rotation {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(359deg);
-    }
 }
 .last--updated {
     padding-left: 5%;

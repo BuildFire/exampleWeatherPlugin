@@ -96,11 +96,11 @@ class Settings {
           });
   };
   
-   /**
+    /**
        * Calls when settings is updated
        * @param {Function} callback callback for handling response
        */
-      static update = (callback) => {
+    static update = (callback) => {
         buildfire.datastore.onUpdate((error, record) => {
             if (error) return callback(error);
         

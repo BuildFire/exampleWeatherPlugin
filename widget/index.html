@@ -90,12 +90,23 @@ window.onload = (event) => {
     Settings.update((event) => {
         refreshWeatherData(event.data);
     });
+
+    fetchWeatherIcons();
 }
 
 handleButtonRefresh = () => {
     Settings.get((err, data) => {
         if(err) return console.log(err);
         refreshWeatherData(data);
+    });
+}
+
+fetchWeatherIcons = (iconCode) => {
+    fetch("https://openweathermap.org/img/wn/" + iconCode + "@2x.png"
+    ).then(function (response) {
+        createWeatherImage(response.url);
+    }).catch(function () {
+        console.log('failed to load image');
     });
 }
 
@@ -128,8 +139,7 @@ refreshWeatherData = (results) => {
         if (err) return console.log(err);
         
         let weatherStatus = response.list[0];
-        let _date = new Date();
-        weatherStatus.latestUpdate = _date.toLocaleString();
+        weatherStatus.latestUpdate = new Date();
         WeatherData.set(weatherStatus, (err, res) => {
             if (err) return console.log(err);
             renderPage(results);
@@ -150,7 +160,8 @@ showElements = (weatherStatus, results) => {
     let weatherDescription = weatherStatus.weather[0].description;
     if(weatherStatus.latestUpdate !== null) {
         let date = weatherStatus.latestUpdate;
-        let formated_date = date.toLocaleString();
+        let formated_date = new Date(date).toLocaleString();
+
         timeElement.innerHTML = 'Latest update: ' + formated_date;
         document.getElementById('last--updated').appendChild(timeElement);
     }
@@ -171,35 +182,36 @@ showElements = (weatherStatus, results) => {
         formatedMaxTemperature += 'K';
     }
 
-    if (weatherStatus.clouds.all > 50 && !weatherStatus.rain && !weatherStatus.snow) {
-        this.createWeatherElement('images/iconfinder_Overcast.ico');
-    }
-    else if (weatherStatus.rain && !weatherStatus.snow) {
-        this.createWeatherElement('images/iconfinder_Hail_Heavy.ico');
-    }
-    else if (weatherStatus.snow && !weatherStatus.rain) {
-        this.createWeatherElement('images/iconfinder_Snow_Occasional.ico');
-    }
-    else {
-        this.createWeatherElement('images/iconfinder_Sunny.ico');
-    }
     document.getElementById('weather--information').innerHTML = formatedTemperature;
     document.getElementById('wind--information').innerHTML = wind;
     document.getElementById('humidity--information').innerHTML = humidity;
     document.getElementById('min-temp--information').innerHTML = formatedMinTemperature;
     document.getElementById('max-temp--information').innerHTML = formatedMaxTemperature;
     document.getElementById('weather--description').innerHTML = weatherDescription
+
+    fetchWeatherIcons(weatherStatus.weather[0].icon);
 }
 
 renderPage = (results) => {
     document.getElementById('location--title').innerHTML = results.place.title;
     WeatherData.get((err, response) => {
         if (err) return console.log(err);
+        let currentTime = new Date().getTime();
+        let latestUpdate = new Date(response.latestUpdate).getTime();
+
+        //two hours in miliseconds
+        const refreshTime = 7200000;
+
+        if(currentTime - latestUpdate > refreshTime) {
+            Settings.get((err, results) => {
+                refreshWeatherData(results);
+            });
+        }
         showElements(response, results);
     });
 }
 
-createWeatherElement = (attr) => {
+createWeatherImage = (attr) => {
     document.getElementById('image--information').setAttribute('src', attr);
 };    
 </script>

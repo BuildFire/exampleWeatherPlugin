@@ -151,12 +151,7 @@
             settingsData.apiKey = event.target.value;
         });
     }
-    calcTime = (offset) => {
-        let d = new Date();
-           
-        let utc = d.getTime() + (d.getTimezoneOffset() * 60000);
-        let nd = new Date(utc + (60000 * offset));
-    }
+
     initializeAutocomplete = () => {
         let options = {
             types: ['(cities)']
@@ -165,8 +160,6 @@
         google.maps.event.addListener(autocomplete, 'place_changed', () => {
             
             let address_components = autocomplete.getPlace().address_components;
-            let offset = autocomplete.getPlace().utc_offset_minutes;
-            calcTime(offset);
             let cityNames = address_components.filter(add => add.types.includes('locality'));
             let title;
             if(cityNames)
@@ -202,14 +195,14 @@
             }
             settingsData.place.address = Object.assign(address);
             getUserAddressBy(address.lat, address.lng);
-        })
+        });
     }
 
     getUserAddressBy = (lat, long) => {
         var xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                let address = JSON.parse(this.responseText)
+                let address = JSON.parse(this.responseText);
                 document.getElementById('searchTextField').value = address.results[0].formatted_address || '';
                 settingsData.place.title = address.results[0].formatted_address;
             }
