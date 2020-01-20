@@ -15,22 +15,7 @@
     <script src="../../../../scripts/buildfire.js"></script>
     <!-- endbuild -->
 
-    <script>
-        function setGoogleApiScript(key) {
-          const docHead = document.getElementsByTagName("head");
-          let scriptEl = document.createElement("script");
-          scriptEl.id = "googleScript";
-          scriptEl.src =
-            "https://maps.googleapis.com/maps/api/js?key=" +
-            key +
-            "&libraries=places&callback=initializeAutocomplete";
-          docHead[0].appendChild(scriptEl);
-        }
-        buildfire.getContext((error, context) => {
-            if(error) return console.log(error);
-            setGoogleApiScript(context.apiKeys.googleApiKey);
-        });
-      </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4Dw4EzKeyVBXWBsbO9-UgyEARL6WLrlU&libraries=places"></script>
 
     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>    
 
@@ -150,9 +135,8 @@
         input.addEventListener('change', (event) => {
             settingsData.apiKey = event.target.value;
         });
-    }
+    
 
-    initializeAutocomplete = () => {
         let options = {
             types: ['(cities)']
         };
@@ -186,9 +170,8 @@
     }
 
     getUserCurrentPosition = () => {
-        buildfire.geo.getCurrentPosition(null, (err, position) => {
-            if(err) return console.log(err);
-            
+        Settings.getGeoPosition((err, position) => {
+            if(err) console.log(err);
             let address = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
@@ -207,12 +190,8 @@
                 settingsData.place.title = address.results[0].formatted_address;
             }
         };
-        buildfire.getContext((error, context) => {
-            if(error) return console.log(error);
-            xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+long+"&key=" + context.apiKeys.googleApiKey , true);
-            xhttp.send();
-        });
-        
+        xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+long+"&key=AIzaSyC4Dw4EzKeyVBXWBsbO9-UgyEARL6WLrlU" , true);
+        xhttp.send();
     }
 
 

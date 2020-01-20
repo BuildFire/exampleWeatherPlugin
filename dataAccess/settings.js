@@ -104,4 +104,12 @@ class Settings {
             return callback(null, new Setting(record));
         });
     };
+    
+    static getGeoPosition = callback => {
+      buildfire.geo.getCurrentPosition({}, (err, data) => {
+        if(err) return callback(err);
+      
+        return callback(null, data);
+    });
+    }
 }
