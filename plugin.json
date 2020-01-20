@@ -21,6 +21,6 @@
 ,"widget":{
 
 },
-  "features" : [{"name": "Geo"}],
+  "features": [{ "name": "Geo" }],
   "languages" : ["en"]
 }

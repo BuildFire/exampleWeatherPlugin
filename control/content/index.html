@@ -186,12 +186,12 @@
     }
 
     getUserCurrentPosition = () => {
-        buildfire.geo.getCurrentPosition({}, (err, data) => {
+        buildfire.geo.getCurrentPosition(null, (err, position) => {
             if(err) return console.log(err);
             
             let address = {
-                lat: data.coords.latitude,
-                lng: data.coords.longitude
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
             }
             settingsData.place.address = Object.assign(address);
             getUserAddressBy(address.lat, address.lng);

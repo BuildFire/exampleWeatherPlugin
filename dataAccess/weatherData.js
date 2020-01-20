@@ -70,7 +70,6 @@ class WeatherData {
        * @param {Function} callback callback for handling response
        */
     static delete = (data, callback) => {
-        data.deletedBy = authManager.currentUser._id;
         data.deletedOn = new Date();
         data.isActive = false;
         buildfire.publicData.update(data.id, data, WeatherData.TAG, (error, record) => {
