@@ -1,22 +1,26 @@
 {
-  "author":"Daniel Hindi"
-,"pluginName":"Weather Plugin Example"
-,"pluginDescription":"JQuery + Datastore "
-,"supportEmail":"[Your support Email]"
+  "author":"BuildFire"
+,"pluginName":"Weather Plugin"
+,"pluginDescription":"A simple app for weather conditions."
+,"supportEmail":"support@buildfire.com"
 ,"control":{
   "content":{
     "enabled":true
   }
 , "design":{
-    "enabled":false
+    "enabled":true
   }
 , "settings":{
-    "enabled":false
+    "enabled":true
   }
+, "customTabs": [
+    { "title": "Language", "url": "/strings/index.html" },
+    { "title": "Tests", "url": "/tests/index.html" }
+  ]
 }
 ,"widget":{
 
 },
-  "features" : [],
+  "features": [{ "name": "Geo" }],
   "languages" : ["en"]
 }

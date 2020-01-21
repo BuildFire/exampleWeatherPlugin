@@ -2,22 +2,43 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-	<!-- Load helper.css to use our helper classes.
-	<link href="../../../../styles/helper.css" rel="stylesheet">
-	-->
-	
-	<!-- JS -->
-	<script src="../../../../scripts/buildfire.js"></script>
-   
- 	<!--
-    <script src="../../../../scripts/angular/angular.min.js"></script>
-    <script src="../../../../scripts/angular/ui-bootstrap.min.js"></script>
 
-    <script src="../../../../scripts/jquery/jquery-1.11.2.min.js"></script>
-    -->
+    <!-- build:bundleControlBFMinJS  -->
+    <script src="../../../../scripts/buildfire.js"></script>
+    <!-- endbuild -->
+
+    <script src="../../../../scripts/buildfire/components/images/thumbnail.js"></script>
+
+    <!-- build:bundleSharedJSFiles  -->
+    <script src="../../widget/js/shared/infoCard.class.js"></script>
+    <!-- endbuild -->
+
+    <link rel="stylesheet" type="text/css" href="../../../../styles/helper.css">
 </head>
 <body>
-    <span>Design - Hello world!</span>
+    <div id="bgImage"></div>
+    <script>
+
+
+		let settings,thumbnail;
+		Settings.get().then(s=>{
+			settings=s;
+			thumbnail = new buildfire.components.images.thumbnail("#bgImage",{imageUrl:s.bgImageUrl});
+
+			thumbnail.onChange =url=>{
+				settings.bgImageUrl =url;
+				settings.save();
+				buildfire.messaging.sendMessageToWidget({cmd:"refresh"});
+			};
+
+			thumbnail.onDelete=()=>{
+				settings.bgImageUrl ="";
+				settings.save();
+				buildfire.messaging.sendMessageToWidget({cmd:"refresh"});
+            };
+
+		});
+
+    </script>
 </body>
 </html>

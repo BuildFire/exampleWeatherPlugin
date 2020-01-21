@@ -1,0 +1,98 @@
+.main__container{
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to left top, #051237, #004375, #007aa2, #00b3b4, #12eba9);
+    overflow: hidden;
+    position: relative;
+}
+.main__container .location--title {
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 15%;
+    margin-top: 12%;
+    width: 100vw;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+
+}
+.location--title #weather--description {
+    font-size: 12px;
+    padding-top: 5%;
+}
+.main__container .location--title span{ 
+    font-size: 10vw;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.temperature__container {
+    height: 30%;
+    width: 50vw;
+    position: relative;
+    float: right;
+}
+.location--title .span-temperature {
+    width: 30vw;
+    padding-top: 20%;
+    position: absolute;
+}
+.location--title .span-temperature span {
+    padding-right: 5%;
+    font-size: 14vw;
+}
+.temperature__container .img-temperature {
+    float: right;
+    position: absolute;
+    right: 5%;
+}
+.temperature__container .span-temperature {
+    float: right;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding-right: 13%;
+}
+.temperature__container img {
+    padding-right: 5%;
+    width: 60vw;
+
+}
+.bottom-container {
+    position: absolute;
+    bottom: 5%;
+    display: inline-block;
+    width:100%;
+    padding: 5%;
+}
+.bottom-container span {
+    float: right;
+}
+.bottom-container hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.last--updated {
+    padding-left: 5%;
+    padding-top: 5%;
+    float: left;
+    width: 100vw;
+}
+
+.last--updated span {
+    font-size: small;
+}
+.refresh--button {
+    width: 100vw;
+    position: absolute;
+    bottom: 0;
+}
+.refresh--button .mdc-button {
+    width: 100vw;
+    height: 50px;
+}
+.refresh--button button span{
+    color: white;
+    font-size: 14px;
+}
