@@ -47,11 +47,11 @@
 </head>
 <body>
 
-    <select id="langOptions" onchange="loadLanguage(this.value)">
+    <!--<select id="langOptions" onchange="loadLanguage(this.value)">
         <option value="en-us">English - US</option>
         <option value="es-mx">Spanish - MX</option>
     </select>
-    <a id="createButton" class="text-success hidden" onclick="createLanguage(langOptions.value)">Click here to begin supporting this language</a>
+    <a id="createButton" class="text-success hidden" onclick="createLanguage(langOptions.value)">Click here to begin supporting this language</a>-->
 
     <div id="stringsContainer" class="hidden">
         loading...
@@ -61,6 +61,7 @@
 
     <script>
 		let strings;
+        tinymce.init({ selector: "textarea" });
 
 		function loadLanguage(lang){
 			stringsContainer.classList.add("hidden");
