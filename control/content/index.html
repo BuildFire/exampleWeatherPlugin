@@ -56,7 +56,7 @@
 
         <div class="select">
             <p style="font-size: 18px;">Select temperature unit</p>
-            <select class="select-text" name="select-text" id="select-text" onchange="handleSave()" required>
+            <select class="select-text" name="select-text" id="select-text" onchange="getRadioBtnValue()" required>
                 <option selected value="metric">Celsius</option>
                 <option value="imperial">Fahrenheit</option>
                 <option value="default">Kelvin</option>
@@ -66,39 +66,6 @@
 
         </div>
 
-        <!--<div class="unit__container">
-            <span>Select temperature unit</span>
-            <div class="mdc-form-field">
-                <div class="mdc-radio">
-                  <input class="mdc-radio__native-control" type="radio" value="metric" id="radio-1" name="radios">
-                  <div class="mdc-radio__background">
-                    <div class="mdc-radio__outer-circle"></div>
-                    <div class="mdc-radio__inner-circle"></div>
-                  </div>
-                  <div class="mdc-radio__ripple"></div>
-                </div>
-                <label for="radio-1">Celsius</label>
-                <div class="mdc-radio">
-                    <input class="mdc-radio__native-control" type="radio" value="imperial" id="radio-2" name="radios">
-                    <div class="mdc-radio__background">
-                      <div class="mdc-radio__outer-circle"></div>
-                      <div class="mdc-radio__inner-circle"></div>
-                    </div>
-                    <div class="mdc-radio__ripple"></div>
-                  </div>
-                  <label for="radio-2">Fahrenheit</label>
-                  <div class="mdc-radio">
-                    <input class="mdc-radio__native-control" type="radio" value="default" id="radio-3" name="radios">
-                    <div class="mdc-radio__background">
-                      <div class="mdc-radio__outer-circle"></div>
-                      <div class="mdc-radio__inner-circle"></div>
-                    </div>
-                    <div class="mdc-radio__ripple"></div>
-                  </div>
-                  <label for="radio-3">Kelvin</label>
-              </div>
-        </div>-->
-
         <div class="content__div">
             <div class="form-container mdc-form-field city__container">
                 <label for="mdc-text-field">City</label>
@@ -106,13 +73,6 @@
                     <input type="text" class="mdc-text-field__input city__input" id="searchTextField">
                 </div>
             </div>
-
-            <!--<div class="form-container btn-container ">
-                <button class="mdc-button mdc-button--unelevated" onclick="handleSave()">
-                    <span class="mdc-button__ripple"></span>
-                    <span class="mdc-button__label">Save</span>
-                  </button>
-            </div>-->
         </div>
 
 
@@ -256,33 +216,19 @@
             }
         }
 
-        /* getRadioBtnValue = () => {
-             let radioBtn = document.getElementsByName('radios');
-             for(i = 0; i < radioBtn.length; i++) {
-                 if(radioBtn[i].checked) {
-                     let value = radioBtn[i].value;
-                     settingsData.tempUnit = value;
-                 }
-             }  
-         }*/
+         getRadioBtnValue = () => {
+                settingsData.tempUnit = document.getElementById('select-text').value;
+                handleSave();
+         }
 
         setRadioBtnChecked = (tempUnit) => {
             var doc = document.querySelector(`select[name="select-text"] option[value=${tempUnit}]`);
             if (doc) { 
                 doc.selected = true;
-                settingsData.tempUnit = document.getElementById('select-text').value;
-                handleSave();
             }
-            /*   if(tempUnit === 'metric')
-                   document.getElementById('radio-1').checked = true;
-               else if(tempUnit === 'imperial')
-                   document.getElementById('radio-2').checked = true;
-               else if(tempUnit === 'default')
-                   document.getElementById('radio-3').checked = true;*/
         }
 
         handleSave = () => {
-            //getRadioBtnValue();
             Settings.set(settingsData, (err) => {
                 if (err) return;
             });

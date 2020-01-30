@@ -1,4 +1,4 @@
-authManager.enforceLogin();
+/*authManager.enforceLogin();
 if (typeof buildfire.components == "undefined")
     buildfire.components = {};
 class Tester {
@@ -43,4 +43,4 @@ function handleRunTests() {
     document.getElementById('resultHolder').innerHTML = '';
 
     runTests();
-};
+};*/

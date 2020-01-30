@@ -1,26 +1,36 @@
 {
-  "author":"BuildFire"
-,"pluginName":"Weather Plugin"
-,"pluginDescription":"A simple app for weather conditions."
-,"supportEmail":"support@buildfire.com"
-,"control":{
-  "content":{
-    "enabled":true
-  }
-, "design":{
-    "enabled":true
-  }
-, "settings":{
-    "enabled":true
-  }
-, "customTabs": [
-    { "title": "Language", "url": "/strings/index.html" },
-    { "title": "Tests", "url": "/tests/index.html" }
+  "author": "BuildFire",
+  "pluginName": "Weather Plugin [Ned Dev]",
+  "pluginDescription": "A simple app for weather conditions.",
+  "supportEmail": "support@buildfire.com",
+  "control": {
+    "content": {
+      "enabled": true
+    },
+    "design": {
+      "enabled": true
+    },
+    "settings": {
+      "enabled": true
+    },
+    "customTabs": [
+      {
+        "title": "Language",
+        "url": "/strings/index.html"
+      },
+      {
+        "title": "Tests",
+        "url": "/tests/index.html"
+      }
+    ]
+  },
+  "widget": {},
+  "features": [
+    {
+      "name": "Geo"
+    }
+  ],
+  "languages": [
+    "en"
   ]
-}
-,"widget":{
-
-},
-  "features": [{ "name": "Geo" }],
-  "languages" : ["en"]
 }
