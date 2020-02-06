@@ -114,6 +114,7 @@
             let options = {
                 types: ['(cities)']
             };
+
             const autocomplete = new google.maps.places.Autocomplete(document.getElementById('searchTextField'), options);
             google.maps.event.addListener(autocomplete, 'place_changed', () => {
 
@@ -150,11 +151,6 @@
 
         function success(pos) {
             var crd = pos.coords;
-
-            console.log('Your current position is:');
-            console.log(`Latitude : ${crd.latitude}`);
-            console.log(`Longitude: ${crd.longitude}`);
-            console.log(`More or less ${crd.accuracy} meters.`);
             let address = {
                 lat: crd.latitude,
                 lng: crd.longitude
@@ -169,6 +165,7 @@
 
         getUserCurrentPosition = () => {
             navigator.geolocation.getCurrentPosition(success, error, options);
+
             /*Settings.getGeoPosition((err, position) => {
                 if (err) console.log(err);
                 let address = {
@@ -190,8 +187,11 @@
                     handleSave();
                 }
             };
-            xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyC4Dw4EzKeyVBXWBsbO9-UgyEARL6WLrlU", true);
-            xhttp.send();
+            buildfire.getContext((err, context) => {
+                if(err) console.log(err)
+                xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=" + context.apiKeys.googleApiKey, true);
+                xhttp.send();
+            })
         }
 
 
@@ -217,7 +217,7 @@
         }
 
          getRadioBtnValue = () => {
-                settingsData.tempUnit = document.getElementById('select-text').value;
+                settingsData.tempUnit = document.getElementById('select-text').value;            
                 handleSave();
          }
 

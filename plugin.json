@@ -1,6 +1,6 @@
 {
   "author": "BuildFire",
-  "pluginName": "Weather Plugin [Ned Dev]",
+  "pluginName": "Weather Plugin",
   "pluginDescription": "A simple app for weather conditions.",
   "supportEmail": "support@buildfire.com",
   "control": {
@@ -11,7 +11,7 @@
       "enabled": true
     },
     "settings": {
-      "enabled": true
+      "enabled": false
     },
     "customTabs": [
       {
