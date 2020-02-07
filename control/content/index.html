@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
@@ -8,29 +9,31 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <!-- build:bundleCSSFiles  -->
-	<link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css">
     <!-- endbuild -->
 
     <!-- build:bundleControlBFMinJS  -->
     <script src="../../../../scripts/buildfire.js"></script>
     <!-- endbuild -->
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4Dw4EzKeyVBXWBsbO9-UgyEARL6WLrlU&libraries=places"></script>
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4Dw4EzKeyVBXWBsbO9-UgyEARL6WLrlU&libraries=places"></script>
 
-    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>    
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
 
-     <!-- build:bundleJSFiles  -->
-     <script src="../../data/setting.js"></script>
-     <script src="../../data/weatherInfo.js"></script>
-     <script src="../../dataAccess/settings.js"></script>
-     <script src="../../dataAccess/weatherData.js"></script>
-      <!-- endbuild -->
+    <!-- build:bundleJSFiles  -->
+    <script src="../../data/setting.js"></script>
+    <script src="../../data/weatherInfo.js"></script>
+    <script src="../../dataAccess/settings.js"></script>
+    <script src="../../dataAccess/weatherData.js"></script>
+    <!-- endbuild -->
 
-     <!-- build:bundleSharedJSFiles  -->
-     <script src="../../widget/js/shared/authManager.js"></script>
-      <!-- endbuild -->
+    <!-- build:bundleSharedJSFiles  -->
+    <script src="../../widget/js/shared/authManager.js"></script>
+    <!-- endbuild -->
 
 </head>
+
 <body>
     <div class="content-page mdc-layout-grid">
 
@@ -150,11 +153,6 @@
 
         function success(pos) {
             var crd = pos.coords;
-
-            console.log('Your current position is:');
-            console.log(`Latitude : ${crd.latitude}`);
-            console.log(`Longitude: ${crd.longitude}`);
-            console.log(`More or less ${crd.accuracy} meters.`);
             let address = {
                 lat: crd.latitude,
                 lng: crd.longitude
@@ -190,8 +188,12 @@
                     handleSave();
                 }
             };
-            xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=AIzaSyC4Dw4EzKeyVBXWBsbO9-UgyEARL6WLrlU", true);
-            xhttp.send();
+
+            buildfire.getContext((err, data) => {
+                xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=" + data.apiKeys.googleApiKey, true);
+                xhttp.send();
+            })
+
         }
 
 
@@ -216,14 +218,14 @@
             }
         }
 
-         getRadioBtnValue = () => {
-                settingsData.tempUnit = document.getElementById('select-text').value;
-                handleSave();
-         }
+        getRadioBtnValue = () => {
+            settingsData.tempUnit = document.getElementById('select-text').value;
+            handleSave();
+        }
 
         setRadioBtnChecked = (tempUnit) => {
             var doc = document.querySelector(`select[name="select-text"] option[value=${tempUnit}]`);
-            if (doc) { 
+            if (doc) {
                 doc.selected = true;
             }
         }
@@ -236,4 +238,5 @@
 
     </script>
 </body>
+
 </html>
