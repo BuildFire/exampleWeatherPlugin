@@ -182,9 +182,13 @@ gulp.task('images', function(){
 });
 
 
+gulp.task('assets', function () {
+	return gulp.src(['control/assets/linearicons/**']).pipe(gulp.dest(destinationFolder + '/control/assets'));
+});
+
 var buildTasksToRun=['controlHTML','widgetHTML','resources','images','sharedJS'];
 
 cssTasks.forEach(function(task){  buildTasksToRun.push(task.name)});
 jsTasks.forEach(function(task){  buildTasksToRun.push(task.name)});
 
-gulp.task('build', gulp.series('lint','clean',...buildTasksToRun) );
+gulp.task('build', gulp.series('lint','clean',...buildTasksToRun, 'assets') );

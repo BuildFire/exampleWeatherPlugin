@@ -1,187 +1,60 @@
-.content__div {
-    margin-top: 50px;
+.customTooltipBox {
+  display: inline-block;
+  text-align: center;
+  margin-left: 10px;
+  position: relative;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  color: #fff;
+  border-radius: 100%;
 }
 
-.mdc-text-field {
-    width: 100%;
-}
-.mdc-text-field input {
-    height: 35px;
-    background-color: white;
-    font-size: 14px;
-}
-.mdc-form-field label {
-    font-size: 14px;
-}
-.mdc-layout-grid__inner {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-.btn-container {
-    margin-top: 27px;
-}
-.btn-container  .mdc-button--unelevated {
-    background-color: #00a1f1;
-}
-.mdc-switch--checked .mdc-switch__thumb {
-    background-color: #00a1f1 !important;
-    border-color: #00a1f1 !important;
-}
-.apiKey__container {
-    display: block;
-}
-.apiKey__container .mdc-text-field {
-    height: 35px;
-}
-.city__container {
-    display: block;
-    margin-top: 20px;
-}
-.city__container .mdc-text-field {
-    height: 35px;
-}
-.currentLocation__container {
-    display: inline;
+.customTooltipBox::after {
+  content: 'i';
+  position: relative;
+  bottom: 4px;
+  display: block;
 }
 
-.unit__container span{
-    font-size: 18px;
-}
-.mdc-radio__outer-circle {
-    border-color: #00a1f1 !important;
+.customTooltipBox .customTooltipText {
+  visibility: hidden;
+  width: 300px;
+  background-color: #414547;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 50%;
+  transform: translate(10px, 50%);
+  left: 100%;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
-.mdc-radio__inner-circle {
-    border-color: #00a1f1 !important;
-}
-.unit__container .mdc-form-field {
-    float: right;
-    margin-top: -10px;
-}
-.mdc-form-field {
-    font-family: 'Muli', sans-serif;
+.customTooltipBox .customTooltipText::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -5px;
+  transform: rotate(90deg) translate(-50%);
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #414547 transparent transparent transparent;
 }
 
-.body {
-    position: relative;
-    font-family:
-      'Roboto','Helvetica','Arial',sans-serif;
-  }
-  
-  .wrap {
+.customTooltipBox:hover .customTooltipText {
+  visibility: visible;
+  opacity: 0.9;
+}
+.dropdown .chev {
     position: absolute;
-    right: 0;
-    top: 40%;
-    width: 350px;
-    left: 0;
-    margin: 0 auto;
-  }
-  
-  /* select starting stylings ------------------------------*/
-  .select {
-    font-family:
-      'Roboto','Helvetica','Arial',sans-serif;
-      position: relative;
-      width: 350px;
-  }
-  
-  .select-text {
-      position: relative;
-      font-family: inherit;
-      background-color: transparent;
-      width: 350px;
-      padding: 10px 10px 10px 0;
-      font-size: 16px;
-      border-radius: 0;
-      border: none;
-      border-bottom: 1px solid rgba(0,0,0, 0.12);
-  }
-  
-  /* Remove focus */
-  .select-text:focus {
-      outline: none;
-      border-bottom: 1px solid rgba(0,0,0, 0);
-  }
-  
-      /* Use custom arrow */
-  .select .select-text {
-      appearance: none;
-      -webkit-appearance:none
-  }
-  
-  .select:after {
-      position: absolute;
-      top: 18px;
-      right: 10px;
-      /* Styling the down arrow */
-      width: 0;
-      height: 0;
-      padding: 0;
-      content: '';
-      border-left: 6px solid transparent;
-      border-right: 6px solid transparent;
-      border-top: 6px solid rgba(0, 0, 0, 0.12);
-      pointer-events: none;
-  }
-  
-  
-  /* LABEL ======================================= */
-  .select-label {
-      color: rgba(0,0,0, 0.26);
-      font-size: 18px;
-      font-weight: normal;
-      position: absolute;
-      pointer-events: none;
-      left: 0;
-      top: 10px;
-      transition: 0.2s ease all;
-  }
-  
-  /* active state */
-  .select-text:focus ~ .select-label, .select-text:valid ~ .select-label {
-      color: #2F80ED;
-      top: -20px;
-      transition: 0.2s ease all;
-      font-size: 14px;
-  }
-  
-  /* BOTTOM BARS ================================= */
-  .select-bar {
-      position: relative;
-      display: block;
-      width: 350px;
-  }
-  
-  .select-bar:before, .select-bar:after {
-      content: '';
-      height: 2px;
-      width: 0;
-      bottom: 1px;
-      position: absolute;
-      background: #2F80ED;
-      transition: 0.2s ease all;
-  }
-  
-  .select-bar:before {
-      left: 50%;
-  }
-  
-  .select-bar:after {
-      right: 50%;
-  }
-  
-  /* active state */
-  .select-text:focus ~ .select-bar:before, .select-text:focus ~ .select-bar:after {
-      width: 50%;
-  }
-  
-  /* HIGHLIGHTER ================================== */
-  .select-highlight {
-      position: absolute;
-      height: 60%;
-      width: 100px;
-      top: 25%;
-      left: 0;
-      pointer-events: none;
-      opacity: 0.5;
+    top: 9px;
+    right: 9px;
+    width: 15px;
+    -webkit-pointer-events: none;
+    pointer-events: none;
   }

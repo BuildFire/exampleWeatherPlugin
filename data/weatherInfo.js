@@ -7,7 +7,8 @@ class WeatherInfo {
         this.lastUpdatedBy = data.lastUpdatedBy || null;
         this.deletedOn = data.deletedOn || null;
         this.deletedBy = data.deletedBy || null;
-
+        this.useCustomColor = data.useCustomColor || null;
+        this.Color = data.Color || null;
         this.latestUpdate = data.latestUpdate || new Date();
         this.id = data.id || null;
         this.clouds = data.clouds || {
