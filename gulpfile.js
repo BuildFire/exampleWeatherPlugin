@@ -61,7 +61,7 @@ gulp.task('lint', () => {
 const cssTasks=[
     {name:"widgetCSS",src:"widget/**/*.css",dest:"/widget"}
     ,{name:"controlContentCSS",src:"control/content/**/*.css",dest:"/control/content"}
-    ,{name:"controlDesignCSS",src:"control/design/**/*.css",dest:"/control/design"}
+//    ,{name:"controlDesignCSS",src:"control/design/**/*.css",dest:"/control/design"}
     ,{name:"controlSettingsCSS",src:"control/settings/**/*.css",dest:"/control/settings"}
 	,{name:"controlStringsCSS",src:"control/strings/**/*.css",dest:"/control/strings"}
 ];
@@ -105,11 +105,10 @@ const jsTasks=[
     {name:"widgetJS",src:"widget/js/*.js",dest:"/widget"}
 	,{ name: "controlStringsJS", src: "control/strings/js/*.js", dest: "/control/strings" }
 	,{name:"controlContentJS",src:["data/*.js", "dataAccess/*.js", "analytics/*.js", "control/content/js/*.js",],dest:"/control/content"}
-	,{name:"controlDesignJS",src:["data/*.js", "dataAccess/*.js", "analytics/*.js", "control/design/js/*.js"],dest:"/control/design"}
+//	,{name:"controlDesignJS",src:["data/*.js", "dataAccess/*.js", "analytics/*.js", "control/design/js/*.js"],dest:"/control/design"}
 	,{name:"controlSettingsJS",src:["data/*.js", "dataAccess/*.js", "analytics/*.js", "control/settings/js/*.js"],dest:"/control/settings"}
-	,{name:"controlTestsDataJS",src:["data/*.js", "dataAccess/*.js", "analytics/*.js"],dest:"/control/tests"}
+	//,{name:"controlTestsDataJS",src:["data/*.js", "dataAccess/*.js", "analytics/*.js"],dest:"/control/tests"}
 	,{name:"widgetDataJS",src:["data/*.js", "dataAccess/*.js", "analytics/*.js"],dest:"/widget"}
-	,{name:"testsJS",src:["tests/*.js", "tests/basic/*.js", "test/screens/*.js"],dest:"/tests"}
 ];
 
 
@@ -186,7 +185,7 @@ gulp.task('assets', function () {
 	return gulp.src(['control/assets/linearicons/**']).pipe(gulp.dest(destinationFolder + '/control/assets'));
 });
 
-var buildTasksToRun=['controlHTML','widgetHTML','resources','images','sharedJS'];
+var buildTasksToRun=['controlHTML','widgetHTML','resources','images'];
 
 cssTasks.forEach(function(task){  buildTasksToRun.push(task.name)});
 jsTasks.forEach(function(task){  buildTasksToRun.push(task.name)});

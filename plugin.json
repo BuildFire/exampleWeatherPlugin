@@ -8,17 +8,11 @@
       "enabled": true
     },
     "design": {
-      "enabled": false
-    },
-    "settings": {
       "enabled": true
     },
-    "customTabs": [
-      {
-        "title": "Language",
-        "url": "/strings/index.html"
-      }
-    ]
+    "settings": {
+      "enabled": false
+    }
   },
   "widget": {},
   "features": [

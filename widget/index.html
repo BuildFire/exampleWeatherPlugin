@@ -5,7 +5,6 @@
     <meta charset="utf-8">
 
     <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 	<!-- build:bundleCSSFiles  -->
 	<link rel="stylesheet" href="css/widget.css">
@@ -25,10 +24,8 @@
 	<!-- endbuild -->
 
 	<!-- build:bundleSharedJSFiles  -->
-	<script src="js/shared/infoCard.class.js"></script>
     <script src="js/shared/strings.js"></script>
 	<script src="js/shared/stringsConfig.js"></script>
-	<script src="../widget/js/shared/authManager.js"></script>
 	<!-- endbuild -->
 
 
@@ -86,7 +83,7 @@
 window.onload = (event) => {
     Settings.get((err, data) => {
         if(err) return console.log(err);
-        if(data.useCustomColor) document.querySelector('.main__container').setAttribute('style', 'background-color:' + data.Color + ';')
+        if(data.useCustomColor) document.querySelector('.main__container').setAttribute('style', data.Color + ';')
         else if(!data.useCustomColor) document.querySelector('.main__container').setAttribute('style', 'background-color: null;')
         renderPage(data);
     });
@@ -139,7 +136,7 @@ refreshWeatherData = (results) => {
         tempUnit = '';
         
 
-    if(results.useCustomColor) document.querySelector('.main__container').setAttribute('style', 'background-color:' + results.Color + ';')
+    if(results.useCustomColor) document.querySelector('.main__container').setAttribute('style', results.Color + ';')
     else if(!results.useCustomColor) document.querySelector('.main__container').setAttribute('style', 'background-color: null;')
 
     fetchWeatherData(results.place.address.lat, results.place.address.lng, tempUnit, results.apiKey, (err, response) => {
