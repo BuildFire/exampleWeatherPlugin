@@ -61,8 +61,8 @@ gulp.task('lint', () => {
 const cssTasks=[
     {name:"widgetCSS",src:"widget/**/*.css",dest:"/widget"}
     ,{name:"controlContentCSS",src:"control/content/**/*.css",dest:"/control/content"}
-//    ,{name:"controlDesignCSS",src:"control/design/**/*.css",dest:"/control/design"}
-    ,{name:"controlSettingsCSS",src:"control/settings/**/*.css",dest:"/control/settings"}
+    ,{name:"controlDesignCSS",src:"control/design/**/*.css",dest:"/control/design"}
+//    ,{name:"controlSettingsCSS",src:"control/settings/**/*.css",dest:"/control/settings"}
 	,{name:"controlStringsCSS",src:"control/strings/**/*.css",dest:"/control/strings"}
 ];
 
