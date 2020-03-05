@@ -1,44 +1,83 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- build:bundleControlBFMinJS  -->
-    <script src="../../../../scripts/buildfire.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- build:bundleCSSFiles  -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="../assets/linearicons/cpIcons.css">
     <!-- endbuild -->
+  <!-- JS -->
+  <script src="../../../../scripts/buildfire.js"></script>
+  <!-- build:bundleJSFiles  -->
+  <script src="../../data/setting.js"></script>
+  <script src="../../data/weatherInfo.js"></script>
+  <script src="../../dataAccess/settings.js"></script>
+  <script src="../../dataAccess/weatherData.js"></script>
+  <!-- endbuild -->
 
-    <script src="../../../../scripts/buildfire/components/images/thumbnail.js"></script>
-
-    <!-- build:bundleSharedJSFiles  -->
-    <script src="../../widget/js/shared/infoCard.class.js"></script>
-    <!-- endbuild -->
-
-    <link rel="stylesheet" type="text/css" href="../../../../styles/helper.css">
 </head>
+
 <body>
-    <div id="bgImage"></div>
-    <script>
-
-
-		let settings,thumbnail;
-		Settings.get().then(s=>{
-			settings=s;
-			thumbnail = new buildfire.components.images.thumbnail("#bgImage",{imageUrl:s.bgImageUrl});
-
-			thumbnail.onChange =url=>{
-				settings.bgImageUrl =url;
-				settings.save();
-				buildfire.messaging.sendMessageToWidget({cmd:"refresh"});
-			};
-
-			thumbnail.onDelete=()=>{
-				settings.bgImageUrl ="";
-				settings.save();
-				buildfire.messaging.sendMessageToWidget({cmd:"refresh"});
-            };
-
-		});
-
-    </script>
+  <main class="padded">
+    <form>
+      <div class="form-group item checkbox checkbox-primary">
+        <input type="checkbox" id="chkCustomColors" onchange="toggleCustomColors()">
+        <label for="chkCustomColors">Use Custom Colors</label>
+      </div>
+      <div class="form-group form-option hidden" id="colorPickerForm">
+        <label>Color</label>
+        <div id="colorPickerContainer" onclick="setColor()">
+          <div id="colorPicker"></div>
+        </div>
+      </div>
+    </form>
+  </main>
 </body>
+<script>
+  initialize();
+  let settingsData;
+
+  function toggleCustomColors() {
+    if (!chkCustomColors.checked)
+      colorPickerForm.classList.add("hidden"); 
+    else {
+      colorPickerForm.classList.remove("hidden");
+      colorPicker.setAttribute("style", settingsData.Color + ";");
+    }
+    settingsData.useCustomColor = chkCustomColors.checked;
+    handleSave();
+  }
+
+  function setColor() {
+    buildfire.colorLib.showDialog({ color: settingsData.Color, colorType: 'solid' }, {}, null, (e, data) => {
+		let color = "";
+		if(data.colorType === "gradient") color = data.gradient.backgroundCSS;
+		else color = "background-color:" + data[data.colorType].backgroundCSS.split(':')[1];
+		colorPicker.setAttribute("style", color + ";");
+		settingsData.Color = color;
+		handleSave();
+    });
+  }
+
+  function handleSave() {
+    Settings.set(settingsData, (err) => {
+      if (err) return;
+    });
+  }
+
+  function initialize() {
+    Settings.get((err, data) => {
+      if (err) return console.log(err);
+      settingsData = Object.assign(data);
+      if (settingsData.useCustomColor) {
+        colorPickerForm.classList.remove("hidden");
+        colorPicker.setAttribute("style", settingsData.Color + ";");
+        chkCustomColors.checked = true;
+      }
+    });
+  };
+
+</script>
+
 </html>

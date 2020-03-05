@@ -46,24 +46,16 @@
 
 </head>
 <body>
-
-    <select id="langOptions" onchange="loadLanguage(this.value)">
-        <option value="en-us">English - US</option>
-        <option value="es-mx">Spanish - MX</option>
-    </select>
-    <a id="createButton" class="text-success hidden" onclick="createLanguage(langOptions.value)">Click here to begin supporting this language</a>
-
-    <div id="stringsContainer" class="hidden">
+    <div id="stringsContainer">
         loading...
     </div>
-    <a id="saveButton" class="btn btn-success pull-right hidden" onclick="save()">Save</a>
-    <a id="deleteButton" class="text-danger pull-right hidden" onclick="deleteLanguage(strings.id)">Delete</a>
+    <a id="saveButton" class="btn btn-success pull-right" onclick="save()">Save</a>
 
     <script>
 		let strings;
+        tinymce.init({ selector: "textarea" });
 
 		function loadLanguage(lang){
-			stringsContainer.classList.add("hidden");
 			strings = new buildfire.services.Strings(lang,stringsConfig);
 			strings.init().then(()=>{
 				showNewLanguageState( strings.id );
@@ -73,44 +65,6 @@
 
 		}
 		loadLanguage("en-us");
-
-		function showNewLanguageState(show){
-			if(show) {
-				deleteButton.classList.remove("hidden");
-				saveButton.classList.remove("hidden");
-				stringsContainer.classList.remove("hidden");
-				createButton.classList.add("hidden");
-
-			}
-			else{
-				deleteButton.classList.add("hidden");
-				saveButton.classList.add("hidden");
-				stringsContainer.classList.add("hidden");
-				createButton.classList.remove("hidden");
-            }
-        }
-
-
-		function createLanguage(language){
-			stringsContainer.disabled=true;
-			strings.createLanguage(language,()=>{
-				stringsContainer.disabled=false;
-            });
-			showNewLanguageState(true);
-			return false;
-        }
-
-		function deleteLanguage(){
-			buildfire.notifications.confirm({message:"Are you sure you want to remove support fo this language?",confirmButton:{type:"danger"}},(e,r)=>{
-				if(r.selectedButton.key =="confirm") {
-					strings.deleteLanguage(() => {
-						loadLanguage(langOptions.value);
-                    });
-				}
-
-            })
-        }
-
 
         function save(){
 

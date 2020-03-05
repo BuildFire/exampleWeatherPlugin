@@ -5,11 +5,9 @@
     <meta charset="utf-8">
 
     <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
 	<!-- build:bundleCSSFiles  -->
 	<link rel="stylesheet" href="css/widget.css">
-	<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
     <!-- endbuild -->
 
     <!-- build:bundleWidgetBFMinJS  -->
@@ -26,17 +24,14 @@
 	<!-- endbuild -->
 
 	<!-- build:bundleSharedJSFiles  -->
-	<script src="js/shared/infoCard.class.js"></script>
     <script src="js/shared/strings.js"></script>
 	<script src="js/shared/stringsConfig.js"></script>
-	<script src="../widget/js/shared/authManager.js"></script>
 	<!-- endbuild -->
 
 
 </head>
 <body>
 	<div class="main__container">
-        <div class="last--updated" id="last--updated"></div>
 		<div class="location--title">
             <span id="location--title"></span>
             <br/>
@@ -53,6 +48,16 @@
 		</div>
 		<div class="bottom-container mdc-layout-grid__inner">
 			<div class="mdc-layout-grid__cell">
+				<label for="min-temp--information">Low temperature</label>
+				<span class="mdc-layout-grid--align-right" id="min-temp--information"></span>
+			</div>
+			<hr role="separator" class="mdc-list-divider">
+			<div class="mdc-layout-grid__cell">
+				<label for="max-temp--information">High temperature</label>
+				<span class="mdc-layout-grid--align-right" id="max-temp--information"></span>
+            </div>
+            <hr role="separator" class="mdc-list-divider">
+			<div class="mdc-layout-grid__cell">
 				<label for="wind--information">Wind</label>
 				<span class="mdc-layout-grid--align-right" id="wind--information"></span>
 			</div>
@@ -61,17 +66,11 @@
 				<label for="humidity--information">Humidity</label>
 				<span class="mdc-layout-grid--align-right" id="humidity--information"></span>
 			</div>
-			<hr role="separator" class="mdc-list-divider">
-			<div class="mdc-layout-grid__cell">
-				<label for="min-temp--information">Min temperature</label>
-				<span class="mdc-layout-grid--align-right" id="min-temp--information"></span>
-			</div>
-			<hr role="separator" class="mdc-list-divider">
-			<div class="mdc-layout-grid__cell">
-				<label for="max-temp--information">Max temperature</label>
-				<span class="mdc-layout-grid--align-right" id="max-temp--information"></span>
-            </div>
             <hr role="separator" class="mdc-list-divider">   
+            <div class="mdc-layout-grid__cell">
+                <label for="last--updated">Last update</label>
+				<span class="mdc-layout-grid--align-right" id="last--updated"></span>
+            </div>
         </div>
         <div class="refresh--button">
             <button class="mdc-button" onclick="handleButtonRefresh()">
@@ -84,6 +83,8 @@
 window.onload = (event) => {
     Settings.get((err, data) => {
         if(err) return console.log(err);
+        if(data.useCustomColor) document.querySelector('.main__container').setAttribute('style', data.Color + ';')
+        else if(!data.useCustomColor) document.querySelector('.main__container').setAttribute('style', 'background-color: null;')
         renderPage(data);
     });
 
@@ -91,7 +92,7 @@ window.onload = (event) => {
         refreshWeatherData(event.data);
     });
 
-    fetchWeatherIcons();
+    //fetchWeatherIcons();
 }
 
 handleButtonRefresh = () => {
@@ -127,13 +128,16 @@ fetchWeatherData = (latitude, longitude, tempUnit, apiKey, callback) => {
 
 refreshWeatherData = (results) => {
     let tempUnit;
-
     if (results.tempUnit === 'metric')
         tempUnit = '&units=metric';
     else if (results.tempUnit === 'imperial')
             tempUnit = '&units=imperial';
     else
         tempUnit = '';
+        
+
+    if(results.useCustomColor) document.querySelector('.main__container').setAttribute('style', results.Color + ';')
+    else if(!results.useCustomColor) document.querySelector('.main__container').setAttribute('style', 'background-color: null;')
 
     fetchWeatherData(results.place.address.lat, results.place.address.lng, tempUnit, results.apiKey, (err, response) => {
         if (err) return console.log(err);
@@ -162,7 +166,7 @@ showElements = (weatherStatus, results) => {
         let date = weatherStatus.latestUpdate;
         let formated_date = new Date(date).toLocaleString();
 
-        timeElement.innerHTML = 'Latest update: ' + formated_date;
+        timeElement.innerHTML = formated_date;
         document.getElementById('last--updated').appendChild(timeElement);
     }
     
@@ -172,9 +176,9 @@ showElements = (weatherStatus, results) => {
         formatedMaxTemperature += '°C';
     }
     else if (results.tempUnit === 'imperial') {
-        formatedTemperature += '°';
-        formatedMinTemperature += '°';
-        formatedMaxTemperature += '°';
+        formatedTemperature += '°F';
+        formatedMinTemperature += '°F';
+        formatedMaxTemperature += '°F';
     }
     else {
         formatedTemperature += 'K';
