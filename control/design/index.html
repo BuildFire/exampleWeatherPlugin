@@ -3,10 +3,10 @@
 
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- build:bundleCSSFiles  -->
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="../assets/linearicons/cpIcons.css">
-    <!-- endbuild -->
+  <!-- build:bundleCSSFiles  -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="./css/linearicons/cpIcons.css">
+  <!-- endbuild -->
   <!-- JS -->
   <script src="../../../../scripts/buildfire.js"></script>
   <!-- build:bundleJSFiles  -->
@@ -40,24 +40,32 @@
 
   function toggleCustomColors() {
     if (!chkCustomColors.checked)
-      colorPickerForm.classList.add("hidden"); 
+      colorPickerForm.classList.add("hidden");
     else {
       colorPickerForm.classList.remove("hidden");
-      colorPicker.setAttribute("style", settingsData.Color + ";");
+      if (settingsData.Color.colorType === "gradient") colorPicker.setAttribute("style", settingsData.Color.gradient.backgroundCSS + ";");
+      else colorPicker.setAttribute("style", settingsData.Color.solid.backgroundCSS + ";");
     }
     settingsData.useCustomColor = chkCustomColors.checked;
     handleSave();
   }
 
+  var options = { backdrop: false, position: "left" };
+  var data = {};
+
+  var callback = function (error, result) {
+    console.log(result)
+    settingsData.Color = result;
+    if (settingsData.Color.colorType === "gradient") colorPicker.setAttribute("style", settingsData.Color.gradient.backgroundCSS + ";");
+    else colorPicker.setAttribute("style", settingsData.Color.solid.backgroundCSS + ";");
+    handleSave();
+  };
+  var onchange = function (error, result) {
+    //you can show how it looks like on live
+  };
+
   function setColor() {
-    buildfire.colorLib.showDialog({ color: settingsData.Color, colorType: 'solid' }, {}, null, (e, data) => {
-		let color = "";
-		if(data.colorType === "gradient") color = data.gradient.backgroundCSS;
-		else color = "background-color:" + data[data.colorType].backgroundCSS.split(':')[1];
-		colorPicker.setAttribute("style", color + ";");
-		settingsData.Color = color;
-		handleSave();
-    });
+    buildfire.colorLib.showDialog(settingsData.Color, options, onchange, callback);
   }
 
   function handleSave() {
@@ -72,7 +80,8 @@
       settingsData = Object.assign(data);
       if (settingsData.useCustomColor) {
         colorPickerForm.classList.remove("hidden");
-        colorPicker.setAttribute("style", settingsData.Color + ";");
+        if (settingsData.Color.colorType === "gradient") colorPicker.setAttribute("style", settingsData.Color.gradient.backgroundCSS + ";");
+        else colorPicker.setAttribute("style", settingsData.Color.solid.backgroundCSS + ";");
         chkCustomColors.checked = true;
       }
     });

@@ -175,7 +175,7 @@ gulp.task('resources', function(){
 
 
 gulp.task('images', function(){
-    return gulp.src(['**/images/**'],{base: '.'})
+    return gulp.src(['widget/images/**'],{base: '.'})
         .pipe(imagemin())
         .pipe(gulp.dest(destinationFolder ));
 });
@@ -185,9 +185,13 @@ gulp.task('assets', function () {
 	return gulp.src(['control/assets/linearicons/**']).pipe(gulp.dest(destinationFolder + '/control/assets'));
 });
 
+gulp.task('fonts', function () {
+	return gulp.src('control/design/css/linearicons/fonts/**/*.{eot,svg,ttf,woff,woff2}').pipe(gulp.dest(destinationFolder + '/control/design/fonts'));
+});
+
 var buildTasksToRun=['controlHTML','widgetHTML','resources','images'];
 
 cssTasks.forEach(function(task){  buildTasksToRun.push(task.name)});
 jsTasks.forEach(function(task){  buildTasksToRun.push(task.name)});
 
-gulp.task('build', gulp.series('lint','clean',...buildTasksToRun, 'assets') );
+gulp.task('build', gulp.series('lint','clean',...buildTasksToRun, 'assets', "images", 'fonts') );
