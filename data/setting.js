@@ -7,8 +7,7 @@ class Setting {
         this.lastUpdatedBy = data.lastUpdatedBy || null;
         this.deletedOn = data.deletedOn || null;
         this.deletedBy = data.deletedBy || null;
-        this.useCustomColor = data.useCustomColor || null;
-        this.Color = data.Color || null;
+
         this.apiKey = data.apiKey || null;
         this.tempUnit = data.tempUnit || null;
         this.useUserCurrentLocation = data.useUserCurrentLocation || null;
