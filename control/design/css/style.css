@@ -1,0 +1,19 @@
+#colorPickerContainer {
+    height: 35px;
+    width: 40px;
+    padding: 8px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+#colorPickerContainer > #colorPicker{
+    height: 100%;
+    width: 100%;
+}
+
+.form-option {
+    display: flex;
+    align-items: center;
+}

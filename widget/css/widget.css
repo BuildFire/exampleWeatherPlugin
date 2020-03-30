@@ -8,14 +8,14 @@
 .main__container .location--title {
     padding-left: 5%;
     padding-right: 5%;
-    padding-top: 10%;
+    padding-right: 5%;
+    padding-top: 2%;
     margin-top: 12%;
     width: 100vw;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     display: block;
-
 }
 .location--title #weather--description {
     font-size: 12px;
@@ -60,8 +60,7 @@
 
 }
 .bottom-container {
-    position: absolute;
-    bottom: 5%;
+    bottom: 20%;
     display: inline-block;
     width:100%;
     padding: 5%;
@@ -85,15 +84,30 @@
 }
 .refresh--button {
     width: 100vw;
-    position: absolute;
-    bottom: 0;
+    text-align: center;
 }
 .refresh--button .mdc-button {
-    width: 100vw;
-    height: 50px;
+    height: 40px;
     text-transform: capitalize;
+    background-color: inherit !important;
+    color: inherit !important;
 }
 .refresh--button button span{
-    color: white;
-    font-size: 14px;
+    padding: 20px;
+    color: inherit !important;
+}
+
+#refreshSVG {
+    font-size: 50px;
+    height: 40px;
+    width: 40px;
+}
+.mdc-button .mdc-button__ripple::before {
+
+    background-color: inherit !important;
+}
+
+.mdc-button .mdc-button__ripple:active {
+    background-color: var(--mdc-theme-primary, #6200ee);
+    opacity: 0.1;
 }

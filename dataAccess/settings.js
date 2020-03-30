@@ -20,21 +20,18 @@ class Settings {
   static get = (callback) => {
     buildfire.datastore.get(Settings.TAG, (error, record) => {
       if (error) return callback(error);
-
       if (!record.data.place) {
         const cmd = {
           place: {title: "", address: {lat: null, lng: null}},
           createdOn: new Date(),
         };
-
+        
         buildfire.datastore.save(cmd, Settings.TAG, (error, record) => {
           if (error) return callback(error);
-
           return callback(null, new Setting(record.data));
         });
       }
-      
-      return callback(null, new Setting(record.data));
+      return callback(null, record.data);
     });
   };
 
@@ -71,6 +68,7 @@ class Settings {
        * @param {Function} callback callback for handling response
        */
     static set = (data, callback) => {
+      console.log(data)
         buildfire.datastore.save(data, Settings.TAG, (error, record) => {
             if (error) return callback(error);
 

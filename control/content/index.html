@@ -25,10 +25,6 @@
     <script src="../../dataAccess/weatherData.js"></script>
     <!-- endbuild -->
 
-    <!-- build:bundleSharedJSFiles  -->
-    <script src="../../widget/js/shared/authManager.js"></script>
-    <!-- endbuild -->
-
 </head>
 
 <body>
@@ -37,29 +33,28 @@
             <label>Open Weather Map API Key
             </label>
             <span class="customTooltipBox btn-primary">
-                <a href="https://openweathermap.org">
+                <a href="https://openweathermap.org" target="_blank">
                     <span class="customTooltipText">
                         Click here to get Open Weather API Key
-                      </span>
+                    </span>
                 </a>
-              </span>
+            </span>
             <input type='password' id="apiKey" class='form-control apiKey' />
         </div>
     </div>
     <br>
     <div class='row'>
         <div class='col-xs-6'>
-            <label>Choose Location</label>
-            <div class='dropdown'>
-                <img src='../../resources/down-chevron.png' class='chev' />
-                <select id="select-location" name="select-location" onchange="changeLocation()" class='form-control'>
-                    <option value='city' selected>Choose City</option>
-                    <option value='location'>Use user's current location</option>
-                </select>
-            </div>
+            <label>Use user’s current location</label>
+        </div>
+        <div class="col-xs-6"></div>
+        <div class="Toggler">
+            <div class="Toggler__on" id="toggleOn" onclick="handleLocation(true)">On</div>
+            <div class="Toggler__off" id="toggleOff" onclick="handleLocation(false)">Off</div>
         </div>
     </div>
     </div>
+
     <br>
     <div class='row'>
         <div class='col-xs-6' id="city_input">
@@ -76,31 +71,33 @@
                 <select id="select-tempunit" name="select-tempunit" onchange="getRadioBtnValue()" class='form-control'>
                     <option value="metric">Celsius</option>
                     <option selected value="imperial">Fahrenheit</option>
-                    <option value="default">Kelvin</option>
                 </select>
             </div>
         </div>
     </div>
 
-
-
     <script>
         var settingsData;
         window.onload = () => {
             Settings.get((err, data) => {
+                console.log(data)
                 if (err) return console.log(err);
                 settingsData = Object.assign(data);
                 document.getElementById('searchTextField').value = data.place.title || '';
                 document.getElementById('apiKey').value = data.apiKey || '';
-                if(data.useUserCurrentLocation) {
-                    document.querySelector(`select[name="select-location"] option[value=location]`).selected = true; 
-                    document.getElementById("city_input").setAttribute('style', 'display: none');
-                }
-                else {document.querySelector(`select[name="select-location"] option[value=city]`).selected = true; 
-                document.getElementById("city_input").setAttribute('style', 'display: block');
+                //console.log(data)
+                console.log(settingsData)
+                if (settingsData.useUserCurrentLocation) {
+                document.getElementById("city_input").setAttribute('style', 'display: none');
+                document.getElementById("toggleOn").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
+                document.getElementById("toggleOff").setAttribute('style', "");
 
+            } else if (!settingsData.useUserCurrentLocation) {
+                document.getElementById("city_input").setAttribute('style', 'display: block');
+                document.getElementById("toggleOff").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
+                document.getElementById("toggleOn").setAttribute('style', "");  
             }
-                if(settingsData.tempUnit == null) settingsData.tempUnit = "imperial";
+                if (settingsData.tempUnit == null) settingsData.tempUnit = "imperial";
                 setRadioBtnChecked(settingsData.tempUnit);
             });
 
@@ -164,16 +161,27 @@
         }
 
         getUserCurrentPosition = () => {
-            navigator.geolocation.getCurrentPosition(success, error, options);
+            //navigator.geolocation.getCurrentPosition(success, error, options);
             /*Settings.getGeoPosition((err, position) => {
                 if (err) console.log(err);
                 let address = {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 }
+                console.log(address)
                 settingsData.place.address = Object.assign(address);
                 getUserAddressBy(address.lat, address.lng);
             });*/
+            buildfire.geo.getCurrentPosition({enableHighAccuracy: true}, (err, result) => {
+                if(err) return console.log(err)
+                console.log(result)
+                let address = {
+                    lat: result.coords.latitude,
+                    lng: result.coords.longitude
+                }
+                settingsData.place.address = Object.assign(address);
+                getUserAddressBy(address.lat, address.lng);
+            })
         }
 
         getUserAddressBy = (lat, long) => {
@@ -193,21 +201,20 @@
             })
 
         }
-
-        changeLocation = () => {
-            let doc = document.getElementById("select-location");
-            if(doc.options[doc.selectedIndex].value === "city" ) {
-                document.getElementById("city_input").setAttribute('style', 'display: block');
-                document.querySelector(`select[name="select-location"] option[value=city]`).selected = true;
-                settingsData.useUserCurrentLocation = false;
-                handleSave();
-
-            } else if(doc.options[doc.selectedIndex].value === "location" ) {
+        handleLocation = (state) => {
+            if (state) {
                 document.getElementById("city_input").setAttribute('style', 'display: none');
-                document.querySelector(`select[name="select-location"] option[value=location]`).selected = true;
+                document.getElementById("toggleOn").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
+                document.getElementById("toggleOff").setAttribute('style', "");
                 settingsData.useUserCurrentLocation = true;
-                getUserCurrentPosition();
+              //  getUserCurrentPosition();
+            } else if (!state) {
+                document.getElementById("city_input").setAttribute('style', 'display: block');
+                document.getElementById("toggleOff").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
+                document.getElementById("toggleOn").setAttribute('style', "");  
+                settingsData.useUserCurrentLocation = false;
             }
+            handleSave();
         }
 
         getRadioBtnValue = () => {
@@ -225,7 +232,6 @@
                 if (err) return;
             });
         }
-
     </script>
 </body>
 
