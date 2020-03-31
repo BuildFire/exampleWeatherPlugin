@@ -45,14 +45,12 @@
     <br>
     <div class='row'>
         <div class='col-xs-6'>
-            <label>Choose Location</label>
-            <div class='dropdown'>
-                <img src='../../resources/down-chevron.png' class='chev' />
-                <select id="select-location" name="select-location" onchange="changeLocation()" class='form-control'>
-                    <option value='city' selected>Choose City</option>
-                    <option value='location'>Use user's current location</option>
-                </select>
-            </div>
+            <label>Use user’s current location</label>
+        </div>
+        <div class="col-xs-6"></div>
+        <div class="Toggler">
+            <div class="Toggler__on" id="toggleOn" onclick="handleLocation(true)">On</div>
+            <div class="Toggler__off" id="toggleOff" onclick="handleLocation(false)">Off</div>
         </div>
     </div>
     </div>
@@ -72,7 +70,6 @@
                 <select id="select-tempunit" name="select-tempunit" onchange="getRadioBtnValue()" class='form-control'>
                     <option value="metric">Celsius</option>
                     <option selected value="imperial">Fahrenheit</option>
-                    <option value="default">Kelvin</option>
                 </select>
             </div>
         </div>
@@ -88,14 +85,15 @@
                 settingsData = Object.assign(data);
                 document.getElementById('searchTextField').value = data.place.title || '';
                 document.getElementById('apiKey').value = data.apiKey || '';
-                if(data.useUserCurrentLocation) {
-                    document.querySelector(`select[name="select-location"] option[value=location]`).selected = true; 
-                    document.getElementById("city_input").setAttribute('style', 'display: none');
+                if (settingsData.useUserCurrentLocation) {
+                document.getElementById("city_input").setAttribute('style', 'display: none');
+                document.getElementById("toggleOn").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
+                document.getElementById("toggleOff").setAttribute('style', "");
+                } else if (!settingsData.useUserCurrentLocation) {
+                    document.getElementById("city_input").setAttribute('style', 'display: block');
+                    document.getElementById("toggleOff").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
+                    document.getElementById("toggleOn").setAttribute('style', "");  
                 }
-                else {document.querySelector(`select[name="select-location"] option[value=city]`).selected = true; 
-                document.getElementById("city_input").setAttribute('style', 'display: block');
-
-            }
                 if(settingsData.tempUnit == null) settingsData.tempUnit = "imperial";
                 setRadioBtnChecked(settingsData.tempUnit);
             });
@@ -159,56 +157,23 @@
             console.warn(`ERROR(${err.code}): ${err.message}`);
         }
 
-        getUserCurrentPosition = () => {
-            navigator.geolocation.getCurrentPosition(success, error, options);
-            /*Settings.getGeoPosition((err, position) => {
-                if (err) console.log(err);
-                let address = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                }
-                settingsData.place.address = Object.assign(address);
-                getUserAddressBy(address.lat, address.lng);
-            });*/
-        }
-
-        getUserAddressBy = (lat, long) => {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    let address = JSON.parse(this.responseText);
-                    document.getElementById('searchTextField').value = address.results[0].formatted_address || '';
-                    settingsData.place.title = address.results[0].formatted_address;
-                    handleSave();
-                }
-            };
-
-            buildfire.getContext((err, data) => {
-                xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=" + data.apiKeys.googleApiKey, true);
-                xhttp.send();
-            })
-
-        }
-
-        changeLocation = () => {
-            let doc = document.getElementById("select-location");
-            if(doc.options[doc.selectedIndex].value === "city" ) {
-                document.getElementById("city_input").setAttribute('style', 'display: block');
-                document.querySelector(`select[name="select-location"] option[value=city]`).selected = true;
-                settingsData.useUserCurrentLocation = false;
-                handleSave();
-
-            } else if(doc.options[doc.selectedIndex].value === "location" ) {
+        handleLocation = (state) => {
+            if (state) {
                 document.getElementById("city_input").setAttribute('style', 'display: none');
-                document.querySelector(`select[name="select-location"] option[value=location]`).selected = true;
+                document.getElementById("toggleOn").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
+                document.getElementById("toggleOff").setAttribute('style', "");
                 settingsData.useUserCurrentLocation = true;
-                getUserCurrentPosition();
+            } else if (!state) {
+                document.getElementById("city_input").setAttribute('style', 'display: block');
+                document.getElementById("toggleOff").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
+                document.getElementById("toggleOn").setAttribute('style', "");  
+                settingsData.useUserCurrentLocation = false;
             }
+            handleSave();
         }
 
         getRadioBtnValue = () => {
             settingsData.tempUnit = document.getElementById('select-tempunit').value;
-            console.log("GET", settingsData.tempUnit)
             handleSave();
         }
 

@@ -73,42 +73,51 @@
             </div>
         </div>
         <div class="refresh--button">
-            <button class="mdc-button" onclick="handleButtonRefresh()">
-                <div class="mdc-button__ripple"></div>
-                <span class="mdc-button__label">Refresh</span>
-              </button>
+            <button class="mdc-button mdc-button--icon" id="refreshBtn" onclick="handleButtonRefresh()"> 
+                <div class="mdc-fab__ripple"></div>
+                <span class="material-icons mdc-fab__icon"><img src="./images/cached-24px.svg" id="refreshSVG"/>
+                </span>
+            </button>
         </div>
 	</div>
 <script>
+var settingsData;
 window.onload = (event) => {
     Settings.get((err, data) => {
         if(err) return console.log(err);
-        if(data.useCustomColor) document.querySelector('.main__container').setAttribute('style', data.Color + ';')
-        else if(!data.useCustomColor) document.querySelector('.main__container').setAttribute('style', 'background-color: null;')
-        renderPage(data);
+        settingsData = Object.assign(data);
+        if (data.useCustomColor) {
+        if (data.Color.colorType === "gradient")
+            document.querySelector('.main__container').setAttribute('style', data.Color.gradient.backgroundCSS + ';')
+        else document.querySelector('.main__container').setAttribute('style', data.Color.solid.backgroundCSS + ';')
+        }
+        else if (!data.useCustomColor) document.querySelector('.main__container').setAttribute('style', 'background-color: null;')
+        refreshBtn.classList.add('active');
+        if (settingsData.useUserCurrentLocation) getUserCurrentPosition();
+        else renderPage(data);
     });
 
     Settings.update((event) => {
-        refreshWeatherData(event.data);
+        settingsData = Object.assign(event.data);
+        if (event.data.useUserCurrentLocation) getUserCurrentPosition();
+        else refreshWeatherData(event.data);    
     });
 
     //fetchWeatherIcons();
 }
 
 handleButtonRefresh = () => {
-    Settings.get((err, data) => {
-        if(err) return console.log(err);
+    if(settingsData.useUserCurrentLocation) getUserCurrentPosition() 
+    else {
+        Settings.get((err, data) => {
+        if (err) return console.log(err);
         refreshWeatherData(data);
     });
+    }
 }
 
 fetchWeatherIcons = (iconCode) => {
-    fetch("https://openweathermap.org/img/wn/" + iconCode + "@2x.png"
-    ).then(function (response) {
-        createWeatherImage(response.url);
-    }).catch(function () {
-        console.log('failed to load image');
-    });
+    document.getElementById('image--information').setAttribute('src', `./images/${iconCode}.png`);
 }
 
 fetchWeatherData = (latitude, longitude, tempUnit, apiKey, callback) => {
@@ -135,9 +144,12 @@ refreshWeatherData = (results) => {
     else
         tempUnit = '';
         
-
-    if(results.useCustomColor) document.querySelector('.main__container').setAttribute('style', results.Color + ';')
-    else if(!results.useCustomColor) document.querySelector('.main__container').setAttribute('style', 'background-color: null;')
+    if (results.useCustomColor) {
+    if (results.Color.colorType === "gradient")
+        document.querySelector('.main__container').setAttribute('style', results.Color.gradient.backgroundCSS + ';')
+    else document.querySelector('.main__container').setAttribute('style', results.Color.solid.backgroundCSS + ';')
+    }
+    else if (!results.useCustomColor) document.querySelector('.main__container').setAttribute('style', 'background-color: null;')
 
     fetchWeatherData(results.place.address.lat, results.place.address.lng, tempUnit, results.apiKey, (err, response) => {
         if (err) return console.log(err);
@@ -195,6 +207,34 @@ showElements = (weatherStatus, results) => {
 
     fetchWeatherIcons(weatherStatus.weather[0].icon);
 }
+
+
+getUserCurrentPosition = () => {
+    buildfire.geo.getCurrentPosition({ enableHighAccuracy: true }, (err, result) => {
+        if (err) return console.log(err)
+        console.log(result)
+        let address = {
+            lat: result.coords.latitude,
+            lng: result.coords.longitude
+        }
+        settingsData.place.address = Object.assign(address);
+        getUserAddressBy(address.lat, address.lng);
+    })
+}
+
+getUserAddressBy = (lat, long) => {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            let address = JSON.parse(this.responseText);
+            settingsData.place.title = address.results[4].formatted_address.split(",", 1);
+            return refreshWeatherData(settingsData);
+        }
+    };
+    xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + long + "&key=" + "AIzaSyC4Dw4EzKeyVBXWBsbO9-UgyEARL6WLrlU", true);
+    xhttp.send();
+}
+
 
 renderPage = (results) => {
     document.getElementById('location--title').innerHTML = results.place.title;
