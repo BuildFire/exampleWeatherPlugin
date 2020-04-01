@@ -54,7 +54,6 @@
   var data = {};
 
   var callback = function (error, result) {
-    console.log(result)
     settingsData.Color = result;
     settingsData.useCustomColor = true;
     if (settingsData.Color.colorType === "gradient") colorPicker.setAttribute("style", settingsData.Color.gradient.backgroundCSS + ";");
