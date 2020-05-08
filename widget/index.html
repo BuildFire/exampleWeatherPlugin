@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
-    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <link href="../../../styles/materialDesign/material-components-web@4.0.0.min.css" rel="stylesheet">
 
 	<!-- build:bundleCSSFiles  -->
 	<link rel="stylesheet" href="css/widget.css">
@@ -13,9 +13,8 @@
     <!-- build:bundleWidgetBFMinJS  -->
 	<script src="../../../scripts/buildfire.js"></script>
     <!-- endbuild -->
-
-    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>    
-	
+    
+	<script src="../../../scripts/materialDesign/material-components-web@4.0.0.min.js" type="text/javascript"></script>
 	<!-- build:bundleJSFiles  -->
 	<script src="../data/setting.js"></script>
     <script src="../data/weatherInfo.js"></script>
@@ -32,6 +31,7 @@
 </head>
 <body>
 	<div class="main__container">
+        
 		<div class="location--title">
             <span id="location--title"></span>
             <br/>
@@ -108,11 +108,11 @@ window.onload = (event) => {
 
 handleButtonRefresh = () => {
     if(settingsData.useUserCurrentLocation) getUserCurrentPosition() 
-    else {
-        Settings.get((err, data) => {
-        if (err) return console.log(err);
-        refreshWeatherData(data);
-    });
+        else {
+            Settings.get((err, data) => {
+            if (err) return console.log(err);
+            refreshWeatherData(data);
+        });
     }
 }
 
