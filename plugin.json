@@ -1,6 +1,6 @@
 {
   "author": "BuildFire",
-  "pluginName": "Weather",
+  "pluginName": "The Weather Plugin",
   "pluginDescription": "Real time weather forecast plugin provides user with all the right information. For user's current location or any place they wish.",
   "supportEmail": "support@buildfire.com",
   "control": {
