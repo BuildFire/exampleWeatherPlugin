@@ -41,7 +41,7 @@ const stringsUI = {
 				'https://www.tiny.cloud/css/codepen.min.css'
 			],
 			setup:function(ed) {
-				ed.on('change', function(e) {
+				ed.on('change keyUp', function(e) {
 
 					stringsUI.debounce(e.target.id, ()=>{
 						if(!ed.targetElm)return;
