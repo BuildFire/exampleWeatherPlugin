@@ -24,7 +24,7 @@
   "languages": [
     "en"
   ],
-	"media": [
+  "media": [
     { "type": "image-resource", "path": "1-Plugin.png" },
     { "type": "image-resource", "path": "2-Benefits.png" },
     { "type": "image-resource", "path": "3-Use-Cases.png" },
