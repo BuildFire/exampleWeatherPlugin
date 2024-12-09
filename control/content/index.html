@@ -15,9 +15,6 @@
     <script src="../../../../scripts/buildfire.js"></script>
     <!-- endbuild -->
 
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4Dw4EzKeyVBXWBsbO9-UgyEARL6WLrlU&libraries=places"></script>
-
     <!-- build:bundleJSFiles  -->
     <script src="../../data/setting.js"></script>
     <script src="../../data/weatherInfo.js"></script>
@@ -80,21 +77,22 @@
     <script>
         var settingsData;
         window.onload = () => {
+            initGoogleMapsSDK();
             Settings.get((err, data) => {
                 if (err) return console.log(err);
                 settingsData = Object.assign(data);
                 document.getElementById('searchTextField').value = data.place.title || '';
                 document.getElementById('apiKey').value = data.apiKey || '';
                 if (settingsData.useUserCurrentLocation) {
-                document.getElementById("city_input").setAttribute('style', 'display: none');
-                document.getElementById("toggleOn").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
-                document.getElementById("toggleOff").setAttribute('style', "");
+                    document.getElementById("city_input").setAttribute('style', 'display: none');
+                    document.getElementById("toggleOn").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
+                    document.getElementById("toggleOff").setAttribute('style', "");
                 } else if (!settingsData.useUserCurrentLocation) {
                     document.getElementById("city_input").setAttribute('style', 'display: block');
                     document.getElementById("toggleOff").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
-                    document.getElementById("toggleOn").setAttribute('style', "");  
+                    document.getElementById("toggleOn").setAttribute('style', "");
                 }
-                if(settingsData.tempUnit == null) settingsData.tempUnit = "imperial";
+                if (settingsData.tempUnit == null) settingsData.tempUnit = "imperial";
                 setRadioBtnChecked(settingsData.tempUnit);
             });
 
@@ -106,6 +104,59 @@
             });
 
 
+
+        }
+
+        var options = {
+            enableHighAccuracy: true,
+        };
+
+        function success(pos) {
+            var crd = pos.coords;
+            let address = {
+                lat: crd.latitude,
+                lng: crd.longitude
+            }
+            settingsData.place.address = Object.assign(address);
+            getUserAddressBy(address.lat, address.lng);
+        }
+
+        function error(err) {
+            console.warn(`ERROR(${err.code}): ${err.message}`);
+        }
+
+        handleLocation = (state) => {
+            if (state) {
+                document.getElementById("city_input").setAttribute('style', 'display: none');
+                document.getElementById("toggleOn").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
+                document.getElementById("toggleOff").setAttribute('style', "");
+                settingsData.useUserCurrentLocation = true;
+            } else if (!state) {
+                document.getElementById("city_input").setAttribute('style', 'display: block');
+                document.getElementById("toggleOff").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
+                document.getElementById("toggleOn").setAttribute('style', "");
+                settingsData.useUserCurrentLocation = false;
+            }
+            handleSave();
+        }
+
+        getRadioBtnValue = () => {
+            settingsData.tempUnit = document.getElementById('select-tempunit').value;
+            handleSave();
+        }
+
+        setRadioBtnChecked = (tempUnit) => {
+            document.querySelector(`select[name="select-tempunit"] option[value=${tempUnit}]`).selected = true;
+        }
+
+        handleSave = () => {
+            Settings.set(settingsData, (err) => {
+                if (err) return;
+            });
+        }
+
+
+        window.googleMapOnLoad = () => {
             let options = {
                 types: ['(cities)']
             };
@@ -137,56 +188,33 @@
                 settingsData.place = Object.assign(place);
                 handleSave();
             });
-        }
-
-        var options = {
-            enableHighAccuracy: true,
         };
 
-        function success(pos) {
-            var crd = pos.coords;
-            let address = {
-                lat: crd.latitude,
-                lng: crd.longitude
-            }
-            settingsData.place.address = Object.assign(address);
-            getUserAddressBy(address.lat, address.lng);
-        }
-
-        function error(err) {
-            console.warn(`ERROR(${err.code}): ${err.message}`);
-        }
-
-        handleLocation = (state) => {
-            if (state) {
-                document.getElementById("city_input").setAttribute('style', 'display: none');
-                document.getElementById("toggleOn").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
-                document.getElementById("toggleOff").setAttribute('style', "");
-                settingsData.useUserCurrentLocation = true;
-            } else if (!state) {
-                document.getElementById("city_input").setAttribute('style', 'display: block');
-                document.getElementById("toggleOff").setAttribute('style', "background-color: #00a1f1; color:'#ffffff; border: none;");
-                document.getElementById("toggleOn").setAttribute('style', "");  
-                settingsData.useUserCurrentLocation = false;
-            }
-            handleSave();
-        }
-
-        getRadioBtnValue = () => {
-            settingsData.tempUnit = document.getElementById('select-tempunit').value;
-            handleSave();
-        }
-
-        setRadioBtnChecked = (tempUnit) => {
-            document.querySelector(`select[name="select-tempunit"] option[value=${tempUnit}]`).selected = true;
-        }
-
-        handleSave = () => {
-            Settings.set(settingsData, (err) => {
-                if (err) return;
-            });
-        }
-
+        const initGoogleMapsSDK = () => {
+            const { apiKeys } = buildfire.getContext();
+            const { googleMapKey } = apiKeys;
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = `https://maps.googleapis.com/maps/api/js?v=weekly&libraries=places&key=${
+                googleMapKey
+            }&callback=googleMapOnLoad`;
+            script.onload = () => {
+                console.info("Successfully loaded Google's Maps SDK.");
+            };
+            script.onerror = () => {
+                buildfire.dialog.alert({
+                    title: 'Error',
+                    message: 'Failed to load Google Maps API.',
+                });
+            };
+            window.gm_authFailure = () => {
+                buildfire.dialog.alert({
+                    title: 'Error',
+                    message: 'Failed to load Google Maps API.',
+                });
+            };
+            document.head.appendChild(script);
+        };
     </script>
 </body>
 
