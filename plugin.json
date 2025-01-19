@@ -1,7 +1,7 @@
 {
   "author": "Buildfire",
   "pluginName": "Weather",
-  "pluginDescription": "Provides real-time weather updates",
+  "pluginDescription": "Provide real-time weather updates, offering accurate, up-to-date forecasts, alerts, and conditions for informed decisions and planning in any location or situation.",
   "supportEmail": "support@buildfire.com",
   "supportSite": "https://learn.buildfire.com/en/articles/4487613-weather-feature",
   "control": {
